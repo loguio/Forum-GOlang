@@ -64,8 +64,6 @@ body {
     height: 15em;
     margin-top: -45em;
     margin-left: 75%;
-
-    background-color: fuchsia; 
     z-index: 1;
 }
 
@@ -81,7 +79,6 @@ svg{
     margin-top: -1em;
     z-index: 3;
     display: inline-block;
-     /* background-color: green; */
 }
 
 
@@ -93,10 +90,85 @@ svg{
     /* margin-left: 4em;
     margin-bottom: -4em; */
     border-radius: 50%;
-    background-color: aqua;
     z-index: 2;
 }
 
-#clicable:hover {
+/* #clicable:hover {
     cursor: pointer;
+} */
+
+
+a {
+    width: 2em;
+    height: 2em;
+}
+
+#crois {
+    background-color: aqua;
+    width: 5em;
+    height: 5em;
+    border-radius: 50%;
+    position: fixed;
+    bottom : 0;
+    text-align: center;
+    color: black;
+    right: 0;
+    margin-bottom: 3em;
+    margin-right: 10em;
+    cursor: pointer;
+
+}
+
+#crois p {
+    font-size: 3em;
+    cursor: pointer;
+}
+
+#croisClose {
+    background-color: aqua;
+    width: 5em;
+    height: 5em;
+    border-radius: 50%;
+    position: fixed;
+    bottom : 0;
+    text-align: center;
+    display: none;
+    color: black;
+    right: 0;
+    margin-bottom: 3em;
+    margin-right: 10em;
+    cursor: pointer;
+}
+
+#croisClose p {
+    font-size: 3em;
+    cursor: pointer;
+}
+
+#publication{
+    width: 20em;
+    display: none;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	align-content: stretch;
+    height: 15em;
+    opacity: 0.7;
+    background-color: #52575E;
+    margin-left: 20em;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin-bottom: 10em;
+    margin-right: 3em;
+}
+
+input:focus {
+    outline: none;
+}
+
+#publication input {
+    width: 14em;
+    height: 4em;
 }

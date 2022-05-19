@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./static/css/home.css">
+    <script src="../static/main.js"></script>
     <title>home</title>
 </head>
 
@@ -20,30 +21,61 @@
     </div>
 
     <div id="profile">
+
         <div id="clicable">
-        <svg viewBox="0 0 650 500" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" id="blobSvg">
-            <g transform="translate(141.75, -19.125)">
-                <defs>
-                    <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" style="stop-color: rgb(82, 87, 94);"></stop>
-                        <stop offset="100%" style="stop-color: rgb(192, 83, 186);"></stop>
-                    </linearGradient>
-                </defs>
-                <path fill="url(#gradient)">
-                    <animate attributeName="d" dur="10000ms" repeatCount="indefinite"
-                    values="M356.5,321.5Q250,393,155,321.5Q60,250,155,143Q250,36,356.5,143Q463,250,356.5,321.5Z ;
+            <svg viewBox="0 0 650 500" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" id="blobSvg">
+                <g transform="translate(141.75, -19.125)">
+                    <a href="./profile">
+
+                        <defs>
+                            <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color: rgb(82, 87, 94);"></stop>
+                                <stop offset="100%" style="stop-color: rgb(192, 83, 186);"></stop>
+                            </linearGradient>
+                        </defs>
+                        <path fill="url(#gradient)">
+                            <animate attributeName="d" dur="10000ms" repeatCount="indefinite"
+                            values="M356.5,321.5Q250,393,155,321.5Q60,250,155,143Q250,36,356.5,143Q463,250,356.5,321.5Z ;
                             M347.5,333.5Q250,417,178,333.5Q106,250,178,131Q250,12,347.5,131Q445,250,347.5,333.5Z ;
                             M315,323.5Q250,397,136.5,323.5Q23,250,136.5,163.5Q250,77,315,163.5Q380,250,315,323.5Z ;
                             M371,365.5Q250,481,183,365.5Q116,250,183,159.5Q250,69,371,159.5Q492,250,371,365.5Z ;
                             M347.5,357.5Q250,465,151,357.5Q52,250,151,167.5Q250,85,347.5,167.5Q445,250,347.5,357.5Z;
-                            M356.5,321.5Q250,393,155,321.5Q60,250,155,143Q250,36,356.5,143Q463,250,356.5,321.5Z"
-                    >
-                    </animate>
-                </path>
-            </g>
-        </svg>
+                            M356.5,321.5Q250,393,155,321.5Q60,250,155,143Q250,36,356.5,143Q463,250,356.5,321.5Z">
+                            </animate>
+                        </path>
+
+                    </a>
+                </g>
+
+            </svg>
+        </div>
     </div>
+
+    <div id="popup">
+        <script>
+            function popup() {
+                console.log("popup");
+                document.getElementById('publication').style.display = "flex"
+                document.getElementById('croisClose').style.display = "block"
+            }
+
+            function closePopup() {
+                console.log("close");
+                document.getElementById('publication').style.display = "none"
+                document.getElementById('croisClose').style.display = "none"
+
+            }
+        </script>
+        <div id="crois" onclick="popup()"><p>+</p></div>
+        <div id ="croisClose" onclick="closePopup()"><p>X</p></div>
+        <div id="publication"> 
+            <!-- <form action="" method="POST"> -->
+                <input id="name" type="text" placeholder="Nom du poste"> <br>
+                <input id="contentpost" type="text" placeholder="contenue"> <br> 
+                <input id="categorie" type="text" placeholder="categorie">
+            <!-- </form> -->
+        </div>
     </div>
 
 

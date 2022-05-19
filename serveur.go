@@ -22,6 +22,7 @@ func main() {
 	http.HandleFunc("/Login", Login)   // lance l'erreur 404 quand on est sur une URL pas utilisée
 	http.HandleFunc("/Signin", Signin) // lance l'erreur 404 quand on est sur une URL pas utilisée
 	http.HandleFunc("/home", home)
+	http.HandleFunc("/profile", profile)
 	http.ListenAndServe("localhost:3000", nil) //lancement du serveur
 }
 
@@ -114,7 +115,7 @@ func displayUser(db *sql.DB) {
 }
 func Login(w http.ResponseWriter, r *http.Request) {
 	user := User{}
-	tmpl, err := template.ParseFiles("./Log.html")
+	tmpl, err := template.ParseFiles("./log.html")
 	if err != nil {
 	}
 	tmpl.ExecuteTemplate(w, "Login", user)
@@ -126,4 +127,12 @@ func home(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 	}
 	tmpl.ExecuteTemplate(w, "home", user)
+}
+
+func profile(w http.ResponseWriter, r *http.Request) {
+	user := User{}
+	tmpl, err := template.ParseFiles("./profile.html")
+	if err != nil {
+	}
+	tmpl.ExecuteTemplate(w, "profile", user)
 }
