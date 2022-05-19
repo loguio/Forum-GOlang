@@ -1,0 +1,26 @@
+{{define "Login"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./static/css/log.css">
+    <title>Connexion</title>
+</head>
+<body>
+
+    <div id="Log">
+        <h1>Y-Forum</h1>
+        <form action="/" method="POST">
+            <input id="Username" type="text" placeholder="Username"> <br>
+            <input id="password" type="password" placeholder="Password "> <br>
+            <button id="loginButton"> Login</button>
+        </form>
+        <p>Vous n'avez pas de compte ? <a href="./Signin"> cree vous un compte !</a> </p>
+        <p>{{.Username}}</p>
+    </div>
+    
+</body>
+</html>
+{{end}}
