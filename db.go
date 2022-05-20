@@ -25,7 +25,7 @@ func signUp(user User) {
 	displayUser(sqliteDatabase)
 }
 
-func loginSQL(user User) {
+func loginSQL(user User) bool {
 	sqliteDatabase, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
 	defer sqliteDatabase.Close()                                     // Defer Closing the database
 	// SELECT RECORDS
@@ -37,8 +37,10 @@ func loginSQL(user User) {
 	if ppl.Username == user.Username && ppl.Password == user.Password {
 		fmt.Println(ppl)
 		fmt.Println("vous êtes connecté avec succès")
+		return true
 	} else {
 		fmt.Println("Ce compte n'existe pas")
+		return false
 	}
 
 }

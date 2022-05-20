@@ -31,6 +31,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		Signin(w, r)
 	case "/home":
 		home(w, r)
+	case "/logout":
+		Logout(w, r)
 	default:
 		w.WriteHeader(http.StatusNotFound)
 		fmt.Fprintf(w, "Not implemented")
@@ -58,6 +60,8 @@ func Signin(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "Signin", user)
 }
 
+var secret = "secret"
+
 func Login(w http.ResponseWriter, r *http.Request) {
 	user := User{}
 	tmpl, err := template.ParseFiles("./Log.html")
@@ -66,38 +70,52 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		cookie, err := r.Cookie("session-id")
 		if err == nil {
-			_, ok := sessionStore[cookie.Value]
-			if ok {
-				fmt.Fprintf(w, "You've already logged in.")
-				return
-			}
+			sessionStore["session"] = cookie.Value
+			fmt.Println("previous cookie value : " + cookie.Value)
+			fmt.Println("You've already logged in.")
 		} else if err != nil {
+			fmt.Println("cookie not found")
 			cookie = &http.Cookie{
 				Name: "session-id",
 			}
-		}
 
-		UserName := r.FormValue("Username")
-		Password := r.FormValue("password")
-		if UserName != "" && Password != "" {
-			user = User{Username: UserName, Password: Password, Email: "test"}
-			loginSQL(user)
+			UserName := r.FormValue("Username")
+			Password := r.FormValue("password")
+			if UserName != "" && Password != "" {
+				user = User{Username: UserName, Password: Password, Email: "test"}
+				connected := loginSQL(user)
+				if connected == true {
+					cookie.Value = UserName
+					cookie.MaxAge = 20
+					sessionStore["session"] = UserName
 
-			cookie.Value = UserName
-			code := getCode(cookie.Value)
-			sessionStore[code] = UserName
+					http.SetCookie(w, cookie)
 
-			http.SetCookie(w, cookie)
-
-			w.WriteHeader(http.StatusOK)
-
-		} else {
-			w.WriteHeader(http.StatusNotFound)
-			fmt.Fprintf(w, "Credential not found")
-			return
+					w.WriteHeader(http.StatusOK)
+				}
+			} else {
+				w.WriteHeader(http.StatusNotFound)
+				fmt.Println("entrée vide")
+			}
 		}
 	}
+	fmt.Println("---------------------------------")
 	tmpl.ExecuteTemplate(w, "Login", user)
+}
+func Logout(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.ParseFiles("./Log.html")
+	cookie, err := r.Cookie("session-id")
+	fmt.Println("cookie value before logout : " + cookie.Value)
+	if err == nil {
+		cookie.MaxAge = -1
+		http.SetCookie(w, cookie)
+		fmt.Println("You've successfully logged out.")
+
+	} else {
+		fmt.Println("You're not logged in.")
+	}
+	tmpl.ExecuteTemplate(w, "Login", nil)
+
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
