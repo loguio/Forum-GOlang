@@ -37,17 +37,32 @@ body {
     margin-top: 1em;
 
 }
+#testpost {
+    background-color: #848586;
+    margin-top: 0.7em;
+    border-style: solid;
+    border-color: #A444A0;
+    box-shadow: inset 0px 0px 10px rgba(164, 68, 159, 0.5), 0px 0px 20px rgba(164, 68, 159, 0.555);
+    border-radius: 15px;
+    width:90% ;
 
+}
 #post {
     background-color: #52575E;
     border-radius: 41px;
     box-shadow: 8px 8px 26px rgba(164, 68, 159, 0.121);
     transition: 0.5s;
     height: 45em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
     width: 45em ;
     margin: 0 auto;
     margin-top: 1em;
     text-align: center; 
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 #post:hover {
@@ -62,9 +77,10 @@ body {
     align-items: center;
     width: 20em;
     height: 15em;
-    margin-top: -45em;
+    margin-top: -44em;
     margin-left: 75%;
     z-index: 1;
+    /* background-color: yellow; */
 }
 
 svg{
@@ -75,10 +91,11 @@ svg{
 #blobSvg {
     width: 20em;
     height: 15em;
-    margin-left: -7em;
-    margin-top: -1em;
+    margin-left: -4em;
+    margin-top: -2em;
     z-index: 3;
-    display: inline-block;
+    /* display: inline-block; */
+    /* background-color: green; */
 }
 
 
@@ -90,6 +107,7 @@ svg{
     /* margin-left: 4em;
     margin-bottom: -4em; */
     border-radius: 50%;
+    /* background-color: aqua; */
     z-index: 2;
 }
 
@@ -104,14 +122,13 @@ a {
 }
 
 #crois {
-    background-color: aqua;
+    background-color: #52575E;
     width: 5em;
     height: 5em;
     border-radius: 50%;
     position: fixed;
     bottom : 0;
     text-align: center;
-    color: black;
     right: 0;
     margin-bottom: 3em;
     margin-right: 10em;
@@ -121,11 +138,15 @@ a {
 
 #crois p {
     font-size: 3em;
+    font-family: Arial, Helvetica, sans-serif;
     cursor: pointer;
+    font-weight: bold;
+    margin-top: 0 auto;
+    margin-top: 0.3em;
 }
 
 #croisClose {
-    background-color: aqua;
+    background-color: #52575E;
     width: 5em;
     height: 5em;
     border-radius: 50%;
@@ -133,7 +154,6 @@ a {
     bottom : 0;
     text-align: center;
     display: none;
-    color: black;
     right: 0;
     margin-bottom: 3em;
     margin-right: 10em;
@@ -141,7 +161,10 @@ a {
 }
 
 #croisClose p {
+    margin-top: 0.3em;
     font-size: 3em;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
     cursor: pointer;
 }
 
@@ -154,7 +177,7 @@ a {
 	align-items: center;
 	align-content: stretch;
     height: 15em;
-    opacity: 0.7;
+    border-radius: 10px;
     background-color: #52575E;
     margin-left: 20em;
     position: fixed;
@@ -167,8 +190,15 @@ a {
 input:focus {
     outline: none;
 }
-
-#publication input {
-    width: 14em;
+#name {
+    width: 16em;
     height: 4em;
+}
+#categorie {
+    width: 16em;
+    height: 4em;
+}
+#contentpost {
+    width: 16em;
+    height: 8em;
 }

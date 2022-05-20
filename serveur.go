@@ -126,6 +126,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.ParseFiles("./home.html")
 	if err != nil {
 	}
+	
 	tmpl.ExecuteTemplate(w, "home", user)
 }
 
