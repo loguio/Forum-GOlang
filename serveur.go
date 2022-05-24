@@ -1,22 +1,18 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"html/template"
 	"net/http"
 
 	_ "github.com/mattn/go-sqlite3" // Import go-sqlite3 library
 	_ "github.com/satori/go.uuid"
-	uuid "github.com/satori/go.uuid"
 )
 
 var sessionStore = map[string]string{} // preferably uuid as key but username would work here
 
 func main() {
-	var err = error(nil)
-	u1 := uuid.Must(uuid.NewV1(), err)
-	fmt.Printf("UUIDv1: %s\n", u1)
-
 	fileServer := http.FileServer(http.Dir("static/")) //Envoie des fichiers aux serveurs (CSS, sons, images)
 	http.Handle("/static/", http.StripPrefix("/static/", fileServer))
 	http.HandleFunc("/", handler)              // lance l'erreur 404 quand on est sur une URL pas utilisée
@@ -82,12 +78,17 @@ func Login(w http.ResponseWriter, r *http.Request) {
 			UserName := r.FormValue("Username")
 			Password := r.FormValue("password")
 			if UserName != "" && Password != "" {
-				user = User{Username: UserName, Password: Password, Email: "test"}
+				user = User{Username: UserName, Password: Password}
+
 				connected := loginSQL(user)
 				if connected == true {
-					cookie.Value = UserName
-					cookie.MaxAge = 20
-					sessionStore["session"] = UserName
+					sqliteDatabase, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
+					defer sqliteDatabase.Close()
+					user = searchUser(sqliteDatabase, UserName)
+
+					cookie.Value = user.UUID
+					cookie.MaxAge = 604800
+					sessionStore["session"] = user.UUID
 
 					http.SetCookie(w, cookie)
 
@@ -105,8 +106,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 func Logout(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.ParseFiles("./Log.html")
 	cookie, err := r.Cookie("session-id")
-	fmt.Println("cookie value before logout : " + cookie.Value)
 	if err == nil {
+		fmt.Println("cookie value before logout : " + cookie.Value)
 		cookie.MaxAge = -1
 		http.SetCookie(w, cookie)
 		fmt.Println("You've successfully logged out.")
@@ -114,6 +115,7 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 	} else {
 		fmt.Println("You're not logged in.")
 	}
+
 	tmpl.ExecuteTemplate(w, "Login", nil)
 
 }

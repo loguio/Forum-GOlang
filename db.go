@@ -4,12 +4,16 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+
+	uuid "github.com/satori/go.uuid"
+	bcrypt "golang.org/x/crypto/bcrypt"
 )
 
 type User struct {
 	Username string
 	Password string
 	Email    string
+	UUID     string
 }
 
 func signUp(user User) {
@@ -30,11 +34,14 @@ func loginSQL(user User) bool {
 	defer sqliteDatabase.Close()                                     // Defer Closing the database
 	// SELECT RECORDS
 	ppl := User{}
-	row := sqliteDatabase.QueryRow("SELECT * FROM Customer WHERE UserName = ? AND password = ?", user.Username, user.Password)
-	// WHERE UserName = ? AND password = ?
-
-	row.Scan(&ppl.Username, &ppl.Email, &ppl.Password)
-	if ppl.Username == user.Username && ppl.Password == user.Password {
+	row, err := sqliteDatabase.Query("SELECT * FROM Customer WHERE UserName = ?", user.Username, user.Password)
+	if err != nil {
+	}
+	defer row.Close()
+	for row.Next() { // Iterate and fetch the records from result cursor
+		row.Scan(&ppl.Username, &ppl.Email, &ppl.Password, &ppl.UUID)
+	}
+	if ppl.Username == user.Username && bcrypt.CompareHashAndPassword([]byte(ppl.Password), []byte(user.Password)) == nil {
 		fmt.Println(ppl)
 		fmt.Println("vous êtes connecté avec succès")
 		return true
@@ -49,7 +56,8 @@ func loginSQL(user User) bool {
 // 	createUserTableSQL := `CREATE TABLE IF NOT EXISTS Customer (
 // 		"UserName" TEXT NOT NULL PRIMARY KEY,
 // 		"Email" TEXT,
-// 		"password" TEXT
+// 		"password" TEXT,
+// 		"UUID" TEXT
 // 	  );` // SQL Statement for Create Table
 
 // 	log.Println("Create Customer table...")
@@ -64,13 +72,16 @@ func loginSQL(user User) bool {
 // We are passing db reference connection from main to our method with other parameters
 func insertUser(db *sql.DB, UserName string, Email string, password string) {
 	log.Println("Inserting Users record ...")
-	insertUserSQL := `INSERT or IGNORE INTO Customer(UserName, Email, password) VALUES (?, ?, ?)`
+	insertUserSQL := `INSERT or IGNORE INTO Customer(UserName, Email, password, UUID) VALUES (?, ?, ?, ?)`
 	statement, err := db.Prepare(insertUserSQL) // Prepare statement.
 	// This is good to avoid SQL injections
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
-	_, err = statement.Exec(UserName, Email, password)
+	var er = error(nil)
+	u1 := uuid.Must(uuid.NewV4(), er)
+	passwordCrypt, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	_, err = statement.Exec(UserName, Email, string(passwordCrypt), u1) // Execute SQL Statement
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
@@ -86,7 +97,21 @@ func displayUser(db *sql.DB) {
 		var UserName string
 		var Email string
 		var password string
-		row.Scan(&UserName, &Email, &password)
-		log.Println("User: ", UserName, " ", Email, " ", password)
+		var UUID string
+		row.Scan(&UserName, &Email, &password, &UUID)
+		log.Println("User: ", UserName, " ", Email, " ", password, " ", UUID)
 	}
+}
+
+func searchUser(db *sql.DB, UserName string) User {
+	row, err := db.Query("SELECT * FROM Customer WHERE UserName = ?", UserName)
+	if err != nil {
+	}
+	var ppl = User{}
+	defer row.Close()
+	for row.Next() {
+		row.Scan(&ppl.Username, &ppl.Email, &ppl.Password, &ppl.UUID)
+	}
+
+	return ppl
 }
