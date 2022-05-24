@@ -16,6 +16,12 @@ type User struct {
 	UUID     string
 }
 
+type Post struct {
+	Name        string
+	Contentpost string
+	Categorie   string
+}
+
 func signUp(user User) {
 	// SQLite is a file based database.
 	sqliteDatabase, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
@@ -114,4 +120,51 @@ func searchUser(db *sql.DB, UserName string) User {
 	}
 
 	return ppl
+}
+func addpost(db *sql.DB, Name string, Contentpost string, Categorie string) {
+	log.Println("Inserting new post ...")
+	insertPostSQL := `INSERT or IGNORE INTO TablePost(name, contentpost, categorie) VALUES (?, ?, ?)`
+	statement, err := db.Prepare(insertPostSQL)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	_, err = statement.Exec(Name, Contentpost, Categorie)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	print("Post added")
+}
+
+// func createTable(db *sql.DB) {
+// 	createPostTableSQL := `CREATE TABLE IF NOT EXISTS TablePost (
+// 		"name" TEXT NOT NULL PRIMARY KEY,
+// 		"contentpost" TEXT,
+// 		"categorie" TEXT
+// 	  );` // SQL Statement for Create Table
+
+// 	log.Println("Create TablePost table...")
+// 	statement, err := db.Prepare(createPostTableSQL) // Prepare SQL Statement
+// 	if err != nil {
+// 		log.Fatal(err.Error())
+// 	}
+// 	statement.Exec() // Execute SQL Statements
+// 	log.Println("Post table created")
+// }
+
+func PostAdd(onePost Post) {
+	// SQLite is a file based database.
+	sqliteDatabase, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
+	defer sqliteDatabase.Close()                                     // Defer Closing the database
+	// createTable(sqliteDatabase)                                      // Create Database Tables
+
+	// INSERT RECORDS
+	addpost(sqliteDatabase, onePost.Name, onePost.Contentpost, onePost.Categorie)
+}
+
+func addbase(db *sql.DB) {
+	insertPostSQL := `INSERT or IGNORE INTO TablePost(name, contentpost, categorie) VALUES (test, test, test)`
+	statement, err := db.Prepare(insertPostSQL)
+	if err != nil {
+		print(statement)
+	}
 }

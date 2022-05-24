@@ -60,7 +60,7 @@ var secret = "secret"
 
 func Login(w http.ResponseWriter, r *http.Request) {
 	user := User{}
-	tmpl, err := template.ParseFiles("./Log.html")
+	tmpl, err := template.ParseFiles("./log.html")
 	if err != nil {
 	}
 	if r.Method == "POST" {
@@ -121,9 +121,28 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
-	user := User{}
+	post := Post{}
 	tmpl, err := template.ParseFiles("./home.html")
+	if r.Method == "POST" {
+		Name := r.FormValue("Name")
+		ContentPost := r.FormValue("ContentPost")
+		Categorie := r.FormValue("Categorie")
+		post = Post{Name: Name, Contentpost: ContentPost, Categorie: Categorie}
+		sqliteDatabase, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
+		defer sqliteDatabase.Close()
+		addbase(sqliteDatabase)
+		PostAdd(post)
+	}
 	if err != nil {
 	}
-	tmpl.ExecuteTemplate(w, "home", user)
+
+	tmpl.ExecuteTemplate(w, "home", post)
+}
+
+func profile(w http.ResponseWriter, r *http.Request) {
+	user := User{}
+	tmpl, err := template.ParseFiles("./profile.html")
+	if err != nil {
+	}
+	tmpl.ExecuteTemplate(w, "profile", user)
 }
