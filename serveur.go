@@ -2,28 +2,40 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"html/template"
-	"log"
 	"net/http"
-	"os"
 
 	_ "github.com/mattn/go-sqlite3" // Import go-sqlite3 library
+	_ "github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
 )
 
-type User struct {
-	Username string
-	Password string
-	Email    string
-}
+var sessionStore = map[string]string{} // preferably uuid as key but username would work here
 
 func main() {
+	var err = error(nil)
+	u1 := uuid.Must(uuid.NewV1(), err)
+	fmt.Printf("UUIDv1: %s\n", u1)
+
 	fileServer := http.FileServer(http.Dir("static/")) //Envoie des fichiers aux serveurs (CSS, sons, images)
 	http.Handle("/static/", http.StripPrefix("/static/", fileServer))
-	http.HandleFunc("/Login", Login)   // lance l'erreur 404 quand on est sur une URL pas utilisée
-	http.HandleFunc("/Signin", Signin) // lance l'erreur 404 quand on est sur une URL pas utilisée
-	http.HandleFunc("/home", home)
-	http.HandleFunc("/profile", profile)
+	http.HandleFunc("/", handler)              // lance l'erreur 404 quand on est sur une URL pas utilisée
 	http.ListenAndServe("localhost:3000", nil) //lancement du serveur
+}
+
+func handler(w http.ResponseWriter, r *http.Request) {
+	switch r.URL.Path {
+	case "/Login":
+		Login(w, r)
+	case "/Signin":
+		Signin(w, r)
+	case "/home":
+		home(w, r)
+	default:
+		w.WriteHeader(http.StatusNotFound)
+		fmt.Fprintf(w, "Not implemented")
+	}
 }
 
 func Signin(w http.ResponseWriter, r *http.Request) {
@@ -36,7 +48,7 @@ func Signin(w http.ResponseWriter, r *http.Request) {
 		confPassword := r.FormValue("confPassword")
 		if Password == confPassword {
 			user = User{Username: UserName, Password: Password, Email: Email}
-			database(user)
+			signUp(user)
 		}
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -47,87 +59,65 @@ func Signin(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "Signin", user)
 }
 
-func database(user User) {
-	// SQLite is a file based database.
-
-	log.Println("Creating sqlite-database.db...")
-	file, err := os.Create("Yforum.db") // Create SQLite file
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-	file.Close()
-	log.Println("sqlite-database.db created")
-
-	sqliteDatabase, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
-	defer sqliteDatabase.Close()                                     // Defer Closing the database
-	createTable(sqliteDatabase)                                      // Create Database Tables
-
-	// INSERT RECORDS
-	insertUser(sqliteDatabase, user.Username, user.Email, user.Password)
-
-	// DISPLAY INSERTED RECORDS
-	displayUser(sqliteDatabase)
-}
-func createTable(db *sql.DB) {
-	createUserTableSQL := `CREATE TABLE IF NOT EXISTS Customer (
-		"UserName" TEXT NOT NULL PRIMARY KEY,		
-		"Email" TEXT,
-		"password" TEXT	
-	  );` // SQL Statement for Create Table
-
-	log.Println("Create Customer table...")
-	statement, err := db.Prepare(createUserTableSQL) // Prepare SQL Statement
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-	statement.Exec() // Execute SQL Statements
-	log.Println("Users table created")
-}
-
-// We are passing db reference connection from main to our method with other parameters
-func insertUser(db *sql.DB, UserName string, Email string, password string) {
-	log.Println("Inserting Users record ...")
-	insertUserSQL := `INSERT or IGNORE INTO Customer(UserName, Email, password) VALUES (?, ?, ?)`
-	statement, err := db.Prepare(insertUserSQL) // Prepare statement.
-	// This is good to avoid SQL injections
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
-	_, err = statement.Exec(UserName, Email, password)
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
-}
-
-func displayUser(db *sql.DB) {
-	row, err := db.Query("SELECT * FROM Customer ORDER BY UserName")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer row.Close()
-	for row.Next() { // Iterate and fetch the records from result cursor
-		var UserName string
-		var Email string
-		var password string
-		row.Scan(&UserName, &Email, &password)
-		log.Println("User: ", UserName, " ", Email, " ", password)
-	}
-}
 func Login(w http.ResponseWriter, r *http.Request) {
 	user := User{}
 	tmpl, err := template.ParseFiles("./log.html")
 	if err != nil {
 	}
+	if r.Method == "POST" {
+		// 	cookie, err := r.Cookie("session-id")
+		// 	if err == nil {
+		// 		_, ok := sessionStore[cookie.Value]
+		// 		if ok {
+		// 			fmt.Fprintf(w, "You've already logged in.")
+		// 			return
+		// 		}
+		// 	} else if err != nil {
+		// 		cookie = &http.Cookie{
+		// 			Name: "session-id",
+		// 		}
+		// 	}
+
+		UserName := r.FormValue("Username")
+		Password := r.FormValue("password")
+		if UserName != "" && Password != "" {
+			user = User{Username: UserName, Password: Password, Email: "test"}
+			loginSQL(user)
+
+			// 		cookie.Value = UserName
+			// 		// code := getCode(cookie.Value)
+			// 		// sessionStore[code] = UserName
+
+			// 		http.SetCookie(w, cookie)
+
+			// 		w.WriteHeader(http.StatusOK)
+
+			// 	} else {
+			// 		w.WriteHeader(http.StatusNotFound)
+			// 		fmt.Fprintf(w, "Credential not found")
+			// 		return
+		}
+	}
 	tmpl.ExecuteTemplate(w, "Login", user)
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
-	user := User{}
+	post := Post{}
 	tmpl, err := template.ParseFiles("./home.html")
+	if r.Method == "POST" {
+		Name := r.FormValue("Name")
+		ContentPost := r.FormValue("ContentPost")
+		Categorie := r.FormValue("Categorie")
+		post = Post{Name: Name, Contentpost: ContentPost, Categorie: Categorie}
+		sqliteDatabase, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
+		defer sqliteDatabase.Close()
+		addbase(sqliteDatabase)
+		PostAdd(post)
+	}
 	if err != nil {
 	}
-	
-	tmpl.ExecuteTemplate(w, "home", user)
+
+	tmpl.ExecuteTemplate(w, "home", post)
 }
 
 func profile(w http.ResponseWriter, r *http.Request) {
