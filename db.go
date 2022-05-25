@@ -26,7 +26,7 @@ func signUp(user User) {
 	// SQLite is a file based database.
 	sqliteDatabase, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
 	defer sqliteDatabase.Close()                                     // Defer Closing the database
-	// createTable(sqliteDatabase)                                      // Create Database Tables
+	createTable(sqliteDatabase)                                      // Create Database Tables
 
 	// INSERT RECORDS
 	insertUser(sqliteDatabase, user.Username, user.Email, user.Password)
@@ -58,22 +58,20 @@ func loginSQL(user User) bool {
 
 }
 
-// func createTable(db *sql.DB) {
-// 	createUserTableSQL := `CREATE TABLE IF NOT EXISTS Customer (
-// 		"UserName" TEXT NOT NULL PRIMARY KEY,
-// 		"Email" TEXT,
-// 		"password" TEXT,
-// 		"UUID" TEXT
-// 	  );` // SQL Statement for Create Table
+func createTable(db *sql.DB) {
+	createUserTableSQL := `CREATE TABLE IF NOT EXISTS Customer (
+		"UserName" TEXT NOT NULL PRIMARY KEY,
+		"Email" TEXT,
+		"password" TEXT,
+		"UUID" TEXT
+	  );` // SQL Statement for Create Table
 
-// 	log.Println("Create Customer table...")
-// 	statement, err := db.Prepare(createUserTableSQL) // Prepare SQL Statement
-// 	if err != nil {
-// 		log.Fatal(err.Error())
-// 	}
-// 	statement.Exec() // Execute SQL Statements
-// 	log.Println("Users table created")
-// }
+	statement, err := db.Prepare(createUserTableSQL) // Prepare SQL Statement
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	statement.Exec() // Execute SQL Statements
+}
 
 // We are passing db reference connection from main to our method with other parameters
 func insertUser(db *sql.DB, UserName string, Email string, password string) {
@@ -126,18 +124,18 @@ func addpost(db *sql.DB, Name string, Contentpost string, Categorie string) {
 	insertPostSQL := `INSERT or IGNORE INTO TablePost(name, contentpost, categorie) VALUES (?, ?, ?)`
 	statement, err := db.Prepare(insertPostSQL)
 	if err != nil {
-		log.Fatalln(err.Error())
+		// log.Fatalln(err.Error())
 	}
 	_, err = statement.Exec(Name, Contentpost, Categorie)
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
-	print("Post added")
 }
 
 // func createTable(db *sql.DB) {
 // 	createPostTableSQL := `CREATE TABLE IF NOT EXISTS TablePost (
-// 		"name" TEXT NOT NULL PRIMARY KEY,
+// 		"id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+// 		"name" TEXT NOT NULL,
 // 		"contentpost" TEXT,
 // 		"categorie" TEXT
 // 	  );` // SQL Statement for Create Table
@@ -151,20 +149,21 @@ func addpost(db *sql.DB, Name string, Contentpost string, Categorie string) {
 // 	log.Println("Post table created")
 // }
 
-func PostAdd(onePost Post) {
-	// SQLite is a file based database.
-	sqliteDatabase, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
-	defer sqliteDatabase.Close()                                     // Defer Closing the database
-	// createTable(sqliteDatabase)                                      // Create Database Tables
-
-	// INSERT RECORDS
-	addpost(sqliteDatabase, onePost.Name, onePost.Contentpost, onePost.Categorie)
-}
-
-func addbase(db *sql.DB) {
-	insertPostSQL := `INSERT or IGNORE INTO TablePost(name, contentpost, categorie) VALUES (test, test, test)`
-	statement, err := db.Prepare(insertPostSQL)
+func postDB() []Post {
+	db, err := sql.Open("sqlite3", "./sqlite-database.db")
 	if err != nil {
-		print(statement)
+		log.Fatal(err)
 	}
+	defer db.Close()
+	TablePost, err := db.Query("SELECT * FROM TablePost")
+	if err != nil {
+		fmt.Println(err)
+	}
+	var post Post
+	var data []Post
+	for TablePost.Next() {
+		TablePost.Scan(&post.Name, &post.Contentpost, &post.Categorie)
+		data = append(data, post)
+	}
+	return data
 }

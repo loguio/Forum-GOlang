@@ -11,6 +11,9 @@ import (
 )
 
 var sessionStore = map[string]string{} // preferably uuid as key but username would work here
+type data struct {
+	Posts []Post
+}
 
 func main() {
 	fileServer := http.FileServer(http.Dir("static/")) //Envoie des fichiers aux serveurs (CSS, sons, images)
@@ -122,7 +125,10 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 
 func home(w http.ResponseWriter, r *http.Request) {
 	post := Post{}
+	var data data
 	tmpl, err := template.ParseFiles("./home.html")
+	if err != nil {
+	}
 	if r.Method == "POST" {
 		Name := r.FormValue("Name")
 		ContentPost := r.FormValue("ContentPost")
@@ -130,13 +136,12 @@ func home(w http.ResponseWriter, r *http.Request) {
 		post = Post{Name: Name, Contentpost: ContentPost, Categorie: Categorie}
 		sqliteDatabase, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
 		defer sqliteDatabase.Close()
-		addbase(sqliteDatabase)
-		PostAdd(post)
-	}
-	if err != nil {
-	}
+		addpost(sqliteDatabase, post.Name, post.Contentpost, post.Categorie)
 
-	tmpl.ExecuteTemplate(w, "home", post)
+	}
+	data.Posts = postDB()
+	fmt.Println(data.Posts)
+	tmpl.ExecuteTemplate(w, "home", data)
 }
 
 func profile(w http.ResponseWriter, r *http.Request) {
