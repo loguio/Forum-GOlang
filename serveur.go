@@ -125,9 +125,9 @@ func home(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.ParseFiles("./home.html")
 	if r.Method == "POST" {
 		Name := r.FormValue("Name")
-		ContentPost := r.FormValue("ContentPost")
+		Contentpost := r.FormValue("Contentpost")
 		Categorie := r.FormValue("Categorie")
-		post = Post{Name: Name, Contentpost: ContentPost, Categorie: Categorie}
+		post = Post{Name: Name, Contentpost: Contentpost, Categorie: Categorie}
 		sqliteDatabase, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
 		defer sqliteDatabase.Close()
 		addbase(sqliteDatabase)
@@ -137,6 +137,13 @@ func home(w http.ResponseWriter, r *http.Request) {
 	}
 
 	tmpl.ExecuteTemplate(w, "home", post)
+
+	// log.Println("Creating sqlite-database.db...")
+	// file, err := os.Create("./sqlite-database.db") // Create SQLite file
+	// if err != nil {
+	// 	log.Fatal(err.Error())
+	// }
+	// file.Close()
 }
 
 func profile(w http.ResponseWriter, r *http.Request) {
