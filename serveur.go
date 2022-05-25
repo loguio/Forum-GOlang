@@ -131,9 +131,9 @@ func home(w http.ResponseWriter, r *http.Request) {
 	}
 	if r.Method == "POST" {
 		Name := r.FormValue("Name")
-		ContentPost := r.FormValue("ContentPost")
+		Contentpost := r.FormValue("Contentpost")
 		Categorie := r.FormValue("Categorie")
-		post = Post{Name: Name, Contentpost: ContentPost, Categorie: Categorie}
+		post = Post{Name: Name, Contentpost: Contentpost, Categorie: Categorie}
 		sqliteDatabase, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
 		defer sqliteDatabase.Close()
 		addpost(sqliteDatabase, post.Name, post.Contentpost, post.Categorie)

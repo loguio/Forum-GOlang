@@ -121,7 +121,7 @@ func searchUser(db *sql.DB, UserName string) User {
 }
 func addpost(db *sql.DB, Name string, Contentpost string, Categorie string) {
 	log.Println("Inserting new post ...")
-	insertPostSQL := `INSERT or IGNORE INTO TablePost(name, contentpost, categorie) VALUES (?, ?, ?)`
+	insertPostSQL := `INSERT or IGNORE INTO TablePost(Name, Contentpost, Categorie) VALUES (?, ?, ?)`
 	statement, err := db.Prepare(insertPostSQL)
 	if err != nil {
 		// log.Fatalln(err.Error())
@@ -132,22 +132,32 @@ func addpost(db *sql.DB, Name string, Contentpost string, Categorie string) {
 	}
 }
 
-// func createTable(db *sql.DB) {
-// 	createPostTableSQL := `CREATE TABLE IF NOT EXISTS TablePost (
-// 		"id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
-// 		"name" TEXT NOT NULL,
-// 		"contentpost" TEXT,
-// 		"categorie" TEXT
-// 	  );` // SQL Statement for Create Table
+func createTable2(db *sql.DB) {
+	createPostTableSQL := `CREATE TABLE IF NOT EXISTS TablePost (
+		"id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+		"Name" TEXT,
+		"Contentpost" TEXT,
+		"Categorie" TEXT
+	  );` // SQL Statement for Create Table
 
-// 	log.Println("Create TablePost table...")
-// 	statement, err := db.Prepare(createPostTableSQL) // Prepare SQL Statement
-// 	if err != nil {
-// 		log.Fatal(err.Error())
-// 	}
-// 	statement.Exec() // Execute SQL Statements
-// 	log.Println("Post table created")
-// }
+	log.Println("Create TablePost table...")
+	statement, err := db.Prepare(createPostTableSQL) // Prepare SQL Statement
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	statement.Exec() // Execute SQL Statements
+	log.Println("Post table created")
+}
+
+func PostAdd(onePost Post) {
+	// SQLite is a file based database.
+	sqliteDatabase, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
+	defer sqliteDatabase.Close()                                     // Defer Closing the database
+	createTable2(sqliteDatabase)                                     // Create Database Tables
+
+	// INSERT RECORDS
+	addpost(sqliteDatabase, onePost.Name, onePost.Contentpost, onePost.Categorie)
+}
 
 func postDB() []Post {
 	db, err := sql.Open("sqlite3", "./sqlite-database.db")
