@@ -141,6 +141,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 			post = Post{Name: Name, Contentpost: Contentpost, Categorie: Categorie}
 			sqliteDatabase, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
 			defer sqliteDatabase.Close()
+			createTablePost(sqliteDatabase)
 			addpost(sqliteDatabase, post.Name, post.Contentpost, post.Categorie)
 		}
 	} else {

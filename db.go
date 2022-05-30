@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"os"
 
 	uuid "github.com/satori/go.uuid"
 	bcrypt "golang.org/x/crypto/bcrypt"
@@ -17,16 +18,18 @@ type User struct {
 }
 
 type Post struct {
+	id          int
 	Name        string
 	Contentpost string
 	Categorie   string
 }
 
 func signUp(user User) {
+	os.Create("sqlite-database.db")
 	// SQLite is a file based database.
 	sqliteDatabase, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
 	defer sqliteDatabase.Close()                                     // Defer Closing the database
-	createTable(sqliteDatabase)                                      // Create Database Tables
+	createTableUser(sqliteDatabase)                                  // Create Database Tables
 
 	// INSERT RECORDS
 	insertUser(sqliteDatabase, user.Username, user.Email, user.Password)
@@ -58,9 +61,10 @@ func loginSQL(user User) bool {
 
 }
 
-func createTable(db *sql.DB) {
+func createTableUser(db *sql.DB) {
 	createUserTableSQL := `CREATE TABLE IF NOT EXISTS Customer (
-		"UserName" TEXT NOT NULL PRIMARY KEY,
+		"id" INTEGER NOT NULL PRIMARY KEY  AUTOINCREMENT,
+		"UserName" TEXT NOT NULL,
 		"Email" TEXT,
 		"password" TEXT,
 		"UUID" TEXT
@@ -136,12 +140,12 @@ func addpost(db *sql.DB, Name string, Contentpost string, Categorie string) {
 	print("Post added")
 }
 
-func createTable2(db *sql.DB) {
+func createTablePost(db *sql.DB) {
 	createPostTableSQL := `CREATE TABLE IF NOT EXISTS TablePost (
-		"id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-		"Name" TEXT,
-		"Contentpost" TEXT,
-		"Categorie" TEXT
+		"Name" TEXT NOT NULL PRIMARY KEY,
+		"Contentpost" TEXT NOT NULL,
+		"Categorie" TEXT,
+		FOREIGN KEY("UUID_User") REFERENCES Customer("UUID"))		
 	  );` // SQL Statement for Create Table
 
 	log.Println("Create TablePost table...")
@@ -151,16 +155,6 @@ func createTable2(db *sql.DB) {
 	}
 	statement.Exec() // Execute SQL Statements
 	log.Println("Post table created")
-}
-
-func PostAdd(onePost Post) {
-	// SQLite is a file based database.
-	sqliteDatabase, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
-	defer sqliteDatabase.Close()                                     // Defer Closing the database
-	createTable2(sqliteDatabase)                                     // Create Database Tables
-
-	// INSERT RECORDS
-	addpost(sqliteDatabase, onePost.Name, onePost.Contentpost, onePost.Categorie)
 }
 
 func postDB() []Post {
@@ -176,7 +170,7 @@ func postDB() []Post {
 	var post Post
 	var data []Post
 	for TablePost.Next() {
-		TablePost.Scan(&post.Name, &post.Contentpost, &post.Categorie)
+		TablePost.Scan(&post.id, &post.Name, &post.Contentpost, &post.Categorie)
 		data = append(data, post)
 	}
 	return data
