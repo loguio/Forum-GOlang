@@ -134,6 +134,7 @@ func addpost(db *sql.DB, Name string, Contentpost string, Categorie string) {
 	}
 	fmt.Println(Name)
 	fmt.Println(Contentpost)
+	fmt.Println(Categorie)
 	print("Post added")
 }
 
@@ -171,3 +172,4 @@ func addbase(db *sql.DB) {
 		print(statement)
 	}
 }
+
