@@ -12,7 +12,8 @@ import (
 
 var sessionStore = map[string]string{} // preferably uuid as key but username would work here
 type data struct {
-	Posts []Post
+	Posts     []Post
+	Connected bool
 }
 
 func main() {
@@ -129,18 +130,23 @@ func home(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.ParseFiles("./home.html")
 	if err != nil {
 	}
-	if r.Method == "POST" {
-		Name := r.FormValue("Name")
-		Contentpost := r.FormValue("Contentpost")
-		Categorie := r.FormValue("Categorie")
-		post = Post{Name: Name, Contentpost: Contentpost, Categorie: Categorie}
-		sqliteDatabase, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
-		defer sqliteDatabase.Close()
-		addpost(sqliteDatabase, post.Name, post.Contentpost, post.Categorie)
-
+	cookie, err := r.Cookie("session-id")
+	if err == nil {
+		data.Connected = true
+		sessionStore["session"] = cookie.Value
+		if r.Method == "POST" {
+			Name := r.FormValue("Name")
+			Contentpost := r.FormValue("Contentpost")
+			Categorie := r.FormValue("Categorie")
+			post = Post{Name: Name, Contentpost: Contentpost, Categorie: Categorie}
+			sqliteDatabase, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
+			defer sqliteDatabase.Close()
+			addpost(sqliteDatabase, post.Name, post.Contentpost, post.Categorie)
+		}
+	} else {
+		data.Connected = false
 	}
 	data.Posts = postDB()
-	fmt.Println(data.Posts)
 	tmpl.ExecuteTemplate(w, "home", data)
 }
 

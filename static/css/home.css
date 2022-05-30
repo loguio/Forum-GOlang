@@ -15,7 +15,7 @@ body {
     align-items: center; */
 }
 
-#categorieBar{
+#categorieBar {
     background-color: #52575E;
     position: fixed;
     top: 0;
@@ -35,8 +35,8 @@ body {
 #categorieBar h1 {
     font-family: Arial, Helvetica, sans-serif;
     margin-top: 1em;
-
 }
+
 #testpost {
     background-color: #848586;
     margin-top: 0.7em;
@@ -44,9 +44,9 @@ body {
     border-color: #A444A0;
     box-shadow: inset 0px 0px 10px rgba(164, 68, 159, 0.5), 0px 0px 20px rgba(164, 68, 159, 0.555);
     border-radius: 15px;
-    width:90% ;
-
+    width: 90%;
 }
+
 #post {
     background-color: #52575E;
     border-radius: 41px;
@@ -57,10 +57,10 @@ body {
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    width: 45em ;
+    width: 45em;
     margin: 0 auto;
     margin-top: 1em;
-    text-align: center; 
+    /* text-align: center; */
     overflow-y: scroll;
     overflow-x: hidden;
 }
@@ -83,7 +83,7 @@ body {
     /* background-color: yellow; */
 }
 
-svg{
+svg {
     z-index: 3;
     margin-left: -2em;
 }
@@ -98,8 +98,6 @@ svg{
     /* background-color: green; */
 }
 
-
-
 #clicable {
     position: relative;
     width: 10em;
@@ -111,10 +109,10 @@ svg{
     z-index: 2;
 }
 
+
 /* #clicable:hover {
     cursor: pointer;
 } */
-
 
 a {
     width: 2em;
@@ -127,13 +125,12 @@ a {
     height: 5em;
     border-radius: 50%;
     position: fixed;
-    bottom : 0;
+    bottom: 0;
     text-align: center;
     right: 0;
     margin-bottom: 3em;
     margin-right: 10em;
     cursor: pointer;
-
 }
 
 #crois p {
@@ -151,7 +148,7 @@ a {
     height: 5em;
     border-radius: 50%;
     position: fixed;
-    bottom : 0;
+    bottom: 0;
     text-align: center;
     display: none;
     right: 0;
@@ -168,14 +165,14 @@ a {
     cursor: pointer;
 }
 
-#publication{
+#publication {
     width: 20em;
     display: none;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: center;
-	align-items: center;
-	align-content: stretch;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: stretch;
     height: 15em;
     border-radius: 10px;
     background-color: #52575E;
@@ -190,15 +187,36 @@ a {
 input:focus {
     outline: none;
 }
+
 #name {
     width: 16em;
     height: 4em;
 }
+
 #categorie {
     width: 16em;
     height: 4em;
 }
+
 #contentpost {
     width: 16em;
     height: 8em;
+}
+
+#postTitle {
+    text-align: left;
+    margin-left: 5px;
+}
+
+.barre {
+    width: 98%;
+    height: 3px;
+    background-color: #ffffff;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+#postContent {
+    margin-left: 5px;
+    margin-bottom: 10px;
 }
