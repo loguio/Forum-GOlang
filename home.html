@@ -17,6 +17,28 @@
         <form action="/Signin" method="POST">
         <button type="submit" id="signin">Sign in</button>
     </form>
+        <br>
+        <br>
+        <div id="categorieListe">
+            <form action="/home" method="POST">
+            <button type="submit" id="sport" >Sport</button>
+            </form>
+            <form action="/home" method="POST">
+                <button type="submit" id="gaming" >Gaming</button>
+            </form>
+            <form action="/home" method="POST">
+                <button type="submit" id="actualité" >Actualité</button>
+            </form>
+            <form action="/home" method="POST">
+                <button type="submit" id="humour" >Humour</button>
+            </form>
+            <form action="/home" method="POST">
+                <button type="submit" id="serie/filme" >Serie et Filme</button>
+            </form>
+            <form action="/home" method="POST">
+                <button type="submit" id="musique" >Musique</button>
+            </form>
+        </div>
     </div>
     
 
@@ -92,7 +114,15 @@
             <form action="/home" method="POST">
                 <input name="Name" id="name" type="text" placeholder="Nom du poste"> <br>
                 <input name="Contentpost" id="contentpost" type="text" placeholder="contenue"> <br> 
-                <input name="Categorie" id="categorie" type="text" placeholder="categorie">
+                <select name="Categorie" id="categorie">
+                    <option value="">Categorie</option> 
+                    <option value="sport">Sport</option> 
+                    <option value="gaming">Gaming</option>
+                    <option value="actualité">Actualité</option>
+                    <option value="humour">Humour</option>
+                    <option value="serie/filme">Serie et Filme</option>
+                    <option value="musique">Musique</option>
+                </select>
                 <button type="submit"> submit </button>
             </form>
         </div>

@@ -130,6 +130,10 @@ func addpost(db *sql.DB, Name string, Contentpost string, Categorie string) {
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
+	fmt.Println(Name)
+	fmt.Println(Contentpost)
+	fmt.Println(Categorie)
+	print("Post added")
 }
 
 func createTable2(db *sql.DB) {

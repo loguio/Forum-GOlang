@@ -49,7 +49,8 @@ body {
 
 #post {
     background-color: #52575E;
-    border-radius: 41px;
+    border-top-left-radius: 41px;
+    border-bottom-left-radius: 41px;
     box-shadow: 8px 8px 26px rgba(164, 68, 159, 0.121);
     transition: 0.5s;
     height: 45em;
@@ -68,6 +69,26 @@ body {
 #post:hover {
     transition: 0.5s;
     box-shadow: 8px 8px 26px #a2449d42;
+}
+
+#post::-webkit-scrollbar {
+    width: 16px;
+    height: 20px;
+}
+
+#post::-webkit-scrollbar-thumb {
+    background-color: #A444A0;
+    background-size: 100% 100%;
+    border-radius: 16px;
+    box-shadow: inset 2px 2px 2px #d28dcf, inset -2px -2px 2px #812c7c;
+}
+
+#post::-webkit-scrollbar-track {
+    background: #848586;
+}
+
+#post::-webkit-scrollbar-corner {
+    background: #848586;
 }
 
 #profile {
@@ -193,10 +214,11 @@ input:focus {
     height: 4em;
 }
 
-#categorie {
+
+/* #categorie {
     width: 16em;
     height: 4em;
-}
+} */
 
 #contentpost {
     width: 16em;
