@@ -124,7 +124,7 @@ func addpost(db *sql.DB, Name string, Contentpost string, Categorie string) {
 	insertPostSQL := `INSERT or IGNORE INTO TablePost(Name, Contentpost, Categorie) VALUES (?, ?, ?)`
 	statement, err := db.Prepare(insertPostSQL)
 	if err != nil {
-		// log.Fatalln(err.Error())
+		log.Fatalln(err.Error())
 	}
 	_, err = statement.Exec(Name, Contentpost, Categorie)
 	if err != nil {
@@ -179,5 +179,22 @@ func postDB() []Post {
 		TablePost.Scan(&post.Name, &post.Contentpost, &post.Categorie)
 		data = append(data, post)
 	}
+	return data
+}
+
+func triPost(db *sql.DB, Categorie string) []Post {
+	row, err := db.Query("SELECT * FROM TablePost WHERE categorie = ?", Categorie)
+	if err != nil {
+	}
+	fmt.Println("est-ce que ca marche ?")
+	var post Post
+	var data []Post
+	defer row.Close()
+	for row.Next() {
+		row.Scan(&post.Name, &post.Contentpost, &post.Categorie)
+		data = append(data, post)
+		fmt.Println("est-ce que ca marche ? x3")
+	}
+	fmt.Println("est-ce que ca marche ? x2")
 	return data
 }

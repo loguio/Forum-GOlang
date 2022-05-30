@@ -127,6 +127,9 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 func home(w http.ResponseWriter, r *http.Request) {
 	post := Post{}
 	var data data
+	sqliteDatabase, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
+	defer sqliteDatabase.Close()
+	tri := []Post{}
 	tmpl, err := template.ParseFiles("./home.html")
 	if err != nil {
 	}
@@ -138,15 +141,27 @@ func home(w http.ResponseWriter, r *http.Request) {
 			Name := r.FormValue("Name")
 			Contentpost := r.FormValue("Contentpost")
 			Categorie := r.FormValue("Categorie")
-			post = Post{Name: Name, Contentpost: Contentpost, Categorie: Categorie}
-			sqliteDatabase, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
-			defer sqliteDatabase.Close()
-			addpost(sqliteDatabase, post.Name, post.Contentpost, post.Categorie)
+			buttonSelect := r.FormValue("buttonCategorie")
+			if buttonSelect != "" {
+				fmt.Println("buttonSelect : " + buttonSelect)
+				tri = triPost(sqliteDatabase, buttonSelect)
+				
+			} else {
+				post = Post{Name: Name, Contentpost: Contentpost, Categorie: Categorie}
+				addpost(sqliteDatabase, post.Name, post.Contentpost, post.Categorie)
+			}
+
 		}
 	} else {
 		data.Connected = false
 	}
-	data.Posts = postDB()
+	if tri != nil {
+		data.Posts = tri
+	} else {
+		data.Posts = postDB()
+	}
+	
+
 	tmpl.ExecuteTemplate(w, "home", data)
 }
 
