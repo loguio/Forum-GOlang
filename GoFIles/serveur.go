@@ -35,7 +35,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func Logout(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles("../Log.html")
+	tmpl, err := template.ParseFiles("../template/Log.html")
 	cookie, err := r.Cookie("session-id")
 	if err == nil {
 		fmt.Println("cookie value before logout : " + cookie.Value)

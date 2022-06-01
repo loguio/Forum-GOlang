@@ -13,7 +13,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 	var tri []Post
 	tri = nil
 
-	tmpl, err := template.ParseFiles("../home.html")
+	tmpl, err := template.ParseFiles("../template/home.html")
 	if err != nil {
 	}
 
@@ -28,7 +28,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 			buttonSelect := r.FormValue("buttonCategorie")
 			IDButtonLike := r.FormValue("buttonLike")
 
-			if buttonSelect != "" {
+			if buttonSelect != "" && buttonSelect != "all" {
 
 				fmt.Println("buttonSelect : " + buttonSelect)
 				tri = triPost(buttonSelect)
@@ -58,6 +58,15 @@ func home(w http.ResponseWriter, r *http.Request) {
 		}
 	} else {
 		data.Connected = false
+		buttonSelect := r.FormValue("buttonCategorie")
+		if buttonSelect != "" && buttonSelect != "all" {
+			fmt.Println("buttonSelect : " + buttonSelect)
+			tri = triPost(buttonSelect)
+			data.Posts = tri
+
+		} else {
+			data.Posts = postDB()
+		}
 	}
 
 	tmpl.ExecuteTemplate(w, "home", data)

@@ -9,7 +9,7 @@ import (
 
 func Login(w http.ResponseWriter, r *http.Request) {
 	user := User{}
-	tmpl, err := template.ParseFiles("../log.html")
+	tmpl, err := template.ParseFiles("../template/log.html")
 	if err != nil {
 	}
 	if r.Method == "POST" {

@@ -7,7 +7,7 @@ import (
 
 func Signin(w http.ResponseWriter, r *http.Request) {
 	user := User{}
-	tmpl, err := template.ParseFiles("../sign in.html") // utilisation du fichier navPage.gohtml pour le template
+	tmpl, err := template.ParseFiles("../template/signIn.html") // utilisation du fichier navPage.gohtml pour le template
 	if r.Method == "POST" {
 		UserName := r.FormValue("Username")
 		Password := r.FormValue("password")

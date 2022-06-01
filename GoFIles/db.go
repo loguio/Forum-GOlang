@@ -115,7 +115,7 @@ func postDB() []Post {
 	var strLike string
 	for TablePost.Next() {
 		TablePost.Scan(&post.ID, &post.Name, &post.Contentpost, &post.Categorie, &strLike, &post.UUID)
-		post.Like = len(strings.Split(strLike, " "))
+		post.Like = len(strings.Split(strLike, " ")) - 1
 		data = append(data, post)
 	}
 	return data
@@ -128,14 +128,13 @@ func triPost(Categorie string) []Post {
 	row, err := db.Query("SELECT * FROM TablePost WHERE categorie = ?", Categorie)
 	if err != nil {
 	}
-	fmt.Println("est-ce que ca marche ?")
 	var post Post
 	var data []Post
 	defer row.Close()
 	for row.Next() {
-		row.Scan(&post.Name, &post.Contentpost, &post.Categorie)
+		row.Scan(&post.ID, &post.Name, &post.Contentpost, &post.Categorie, &post.Like, &post.UUID)
 		data = append(data, post)
-		fmt.Println("est-ce que ca marche ? x3")
 	}
+	fmt.Println(data)
 	return data
 }

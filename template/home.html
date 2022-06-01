@@ -14,16 +14,12 @@
 <body>
     <div id="categorieBar">
         <h1>Categories</h1>
-        <form action="/Signin" method="POST">
-            <button type="submit" id="signin">Sign in</button>
-        </form>
-        <form action="/home" method="POST">
-            <button type="submit" id="signup">home</button>
-        </form>
-
         <br>
         <br>
         <div id="categorieListe">
+            <form action="/home" method="POST">
+                <button type="submit" id="all" name="buttonCategorie" value="all">Home</button>
+            </form>
             <form action="/home" method="POST">
             <button type="submit" id="sport" name="buttonCategorie" value="sport">Sport</button>
             </form>
@@ -37,7 +33,7 @@
                 <button type="submit" id="humour" name="buttonCategorie" value="humour">Humour</button>
             </form>
             <form action="/home" method="POST">
-                <button type="submit" id="serie/filme" name="buttonCategorie" value="serie/filme">Serie et Filme</button>
+                <button type="submit" id="serieEtfilme" name="buttonCategorie" value="serie/filme">Serie et Filme</button>
             </form>
             <form action="/home" method="POST">
                 <button type="submit" id="musique" name="buttonCategorie" value="musique">Musique</button>
@@ -98,6 +94,8 @@
         </div>
         
     </div>
+
+
     
     {{if .Connected}}
     <div id="popup">
@@ -114,7 +112,11 @@
                 document.getElementById('croisClose').style.display = "none"
 
             }
+            function hidden(){
+                document.getElementById('signin').style.display="none"
+            }
         </script>
+
         <div id="crois" onclick="popup()"><p>+</p></div>
         <div id ="croisClose" onclick="closePopup()"><p>X</p></div>
         <div id="publication"> 
@@ -133,7 +135,26 @@
                 <button type="submit"> submit </button>
             </form>
         </div>
+        <div id="divButtonLogout">
+            <form action="/logout" method="POST">
+                <button type="submit" id="LogoutButton">logout</button>
+            </form>
+        </div>
+        {{ else }}
+            <script>
+                function unhidden(){
+                    document.getElementById('signin').style.display = "block"
+                }
+                function hiddenLogout(){
+                    document.getElementById('LogoutButton').style.display = "none"
+                    document.getElementById('divButtonLogout').style.display = "none"
+                }
+            </script>
+        <form action="/Signin" method="POST">
+            <button type="submit" id="signin">Sign in</button>
+        </form>
         {{end}}
+
     </div>
 
 
