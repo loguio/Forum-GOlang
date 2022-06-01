@@ -1,0 +1,142 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    height: 45em;
+    bottom: 0;
+    background-color: #2C2F33;
+    color: rgb(225, 224, 224);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#Log {
+    position: relative;
+    width: 30em;
+    height: 30em;
+    margin: 0 auto;
+    background-color: #52575E;
+    border-radius: 41px;
+    box-shadow: 17px 16px 21px rgba(164, 68, 159, 0.121);
+    transition: 0.5s;
+    text-align: center;
+    margin-top: auto;
+    margin: auto;
+}
+
+#Log:hover {
+    transition: 0.5s;
+    box-shadow: 17px 16px 21px rgba(164, 68, 159, 0.259);
+}
+
+#Log h1 {
+    font-size: 2em;
+    margin-top: 1em;
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(225, 224, 224);
+    font-weight: bold;
+}
+
+#Username {
+    margin-top: 2.5em;
+    margin-bottom: 1em;
+    border-radius: 10px;
+    color: #babbbb;
+    text-align: center;
+    width: 27em;
+    height: 3.5em;
+    background: none;
+    border-style: solid;
+    border-color: #A444A0;
+    box-shadow: inset 0px 0px 10px rgba(164, 68, 159, 0.5), 0px 0px 20px rgba(164, 68, 159, 0.555);
+    overflow: hidden;
+}
+
+#Username::placeholder {
+    color: #babbbb;
+    font-size: 1.2em;
+}
+
+#Username:focus {
+    outline: none;
+}
+
+#password {
+    margin-top: 2em;
+    margin-bottom: 3em;
+    border-radius: 10px;
+    color: #babbbb;
+    text-align: center;
+    width: 27em;
+    height: 3.5em;
+    background: none;
+    border-style: solid;
+    border-color: #A444A0;
+    box-shadow: inset 0px 0px 10px rgba(164, 68, 159, 0.5), 0px 0px 20px rgba(164, 68, 159, 0.555);
+    overflow: hidden;
+}
+
+#password::placeholder {
+    color: #babbbb;
+    font-size: 1.2em;
+}
+
+#password:focus {
+    outline: none;
+}
+
+#loginButton {
+    background: none;
+    border: none;
+    color: #babbbb;
+    font-size: 3.5em;
+    margin-bottom: 1em;
+    background: transparent;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    z-index: 1;
+}
+
+#loginButton::after {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    background: #babbbb;
+    transition: all 0.3s ease;
+}
+
+#loginButton:hover {
+    color: #A444A0;
+}
+
+#loginButton:hover::after {
+
+    top: 0;
+    height: 100%;
+}
+
+#loginButton:active {
+    top: 2px;
+}
+
+a {
+    text-decoration: none;
+    color: #babbbb;
+}
+
+p {
+    color: #babbbb;
+}
+
