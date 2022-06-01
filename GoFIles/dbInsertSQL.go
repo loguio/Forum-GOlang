@@ -9,22 +9,21 @@ import (
 	bcrypt "golang.org/x/crypto/bcrypt"
 )
 
-// We are passing db reference connection from main to our method with other parameters
 func dbInsertUser(UserName string, Email string, password string) {
 	db, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
-	defer db.Close()
+	defer db.Close()                                     //ferme la database
 
 	log.Println("Inserting Users record ...")
-	insertUserSQL := `INSERT or IGNORE INTO Customer(UUID, UserName, Email, password) VALUES (?, ?, ?, ?)`
-	statement, err := db.Prepare(insertUserSQL) // Prepare statement.
+	insertUserSQL := `INSERT or IGNORE INTO Customer(UUID, UserName, Email, password) VALUES (?, ?, ?, ?)` //création de la requête sqlite
+	statement, err := db.Prepare(insertUserSQL)                                                            // Prepare la requete
 	// This is good to avoid SQL injections
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
 	var er = error(nil)
-	u1 := uuid.Must(uuid.NewV4(), er)
-	passwordCrypt, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	_, err = statement.Exec(u1, UserName, Email, string(passwordCrypt)) // Execute SQL Statement
+	u1 := uuid.Must(uuid.NewV4(), er)                                                       //création d'un UUID
+	passwordCrypt, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost) //cryptage du mot de passe
+	_, err = statement.Exec(u1, UserName, Email, string(passwordCrypt))                     // Execute SQL Statement
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
@@ -33,15 +32,15 @@ func dbInsertUser(UserName string, Email string, password string) {
 
 func dbInsertPost(Name string, Contentpost string, Categorie string, cookieValue string) {
 	db, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
-	defer db.Close()
+	defer db.Close()                                     //ferme la database
 
 	log.Println("Inserting new post ...")
-	insertPostSQL := `INSERT or IGNORE INTO TablePost(Name, Contentpost, Categorie, UUID_User) VALUES (?, ?, ?, ?)`
-	statement, err := db.Prepare(insertPostSQL)
+	insertPostSQL := `INSERT or IGNORE INTO TablePost(Name, Contentpost, Categorie, UUID_User) VALUES (?, ?, ?, ?)` //création de la requête sqlite
+	statement, err := db.Prepare(insertPostSQL)                                                                     // Prepare la requete
 	if err != nil {
 		log.Println(err.Error())
 	}
-	_, err = statement.Exec(Name, Contentpost, Categorie, cookieValue)
+	_, err = statement.Exec(Name, Contentpost, Categorie, cookieValue) // Execute la requete sqlite
 	if err != nil {
 		log.Println(err.Error())
 	}
