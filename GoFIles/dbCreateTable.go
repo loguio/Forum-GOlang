@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 )
 
@@ -18,13 +17,17 @@ func createTableUser() { //fonction pour créer la table User en cas de besoin
 
 	statement, err := db.Prepare(createUserTableSQL) // Prepare la requete sqlite
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Println(err.Error())
 	}
 	statement.Exec() // Execute SQL Statements
 }
 
-func createTablePost() { //fonction pour créer la table Post en cas de besoin
-	db, _ := sql.Open("sqlite3", "./sqlite-database.db") // Ouverture de la database
+func createTablePost() error { //fonction pour créer la table Post en cas de besoin
+	db, err := sql.Open("sqlite3", "./sqlite-database.db") // Ouverture de la database
+	if err != nil {
+		log.Println(err)
+		return err
+	}
 	defer db.Close()
 
 	createPostTableSQL := `CREATE TABLE IF NOT EXISTS TablePost (
@@ -40,8 +43,10 @@ func createTablePost() { //fonction pour créer la table Post en cas de besoin
 	log.Println("Create TablePost table...")
 	statement, err := db.Prepare(createPostTableSQL) // prepare la requete sqlite
 	if err != nil {
-		log.Fatal(err.Error() + " ICI PB FOREIGN KEY")
+		log.Println(err.Error() + " ICI PB FOREIGN KEY")
+		return err
 	}
 	statement.Exec() // Execute la requete sqlite
 	log.Println("Post table created")
+	return nil
 }

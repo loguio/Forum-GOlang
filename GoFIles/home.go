@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 	"strconv"
 )
@@ -15,6 +15,8 @@ func home(w http.ResponseWriter, r *http.Request) {
 
 	tmpl, err := template.ParseFiles("../template/home.html") //parse le template home.html
 	if err != nil {
+		erreur500(w)
+		return
 	}
 
 	cookie, err := r.Cookie("session-id") //recupere le cookie session-id
@@ -30,42 +32,75 @@ func home(w http.ResponseWriter, r *http.Request) {
 
 			if buttonSelect != "" && buttonSelect != "all" { //si il y a un bouton de categorie
 
-				fmt.Println("buttonSelect : " + buttonSelect)
-				tri = triPost(buttonSelect) //tri les post par categorie
-				data.Posts = tri            //affiche les post trié
+				log.Println("buttonSelect : " + buttonSelect)
+				tri, err = triPost(buttonSelect) //tri les post par categorie
+				if err != nil {
+					erreur500(w)
+					return
+				}
+				data.Posts = tri //affiche les post trié
 
 			} else if Name != "" && Contentpost != "" && Categorie != "" { //si il y a un post
 
 				post = Post{Name: Name, Contentpost: Contentpost, Categorie: Categorie}
 				// createTablePost()
-				dbInsertPost(post.Name, post.Contentpost, post.Categorie, cookie.Value) //ajoute le post dans la base
-				data.Posts = postDB()                                                   //recupere les post de la base pour les afficher
+				err = dbInsertPost(post.Name, post.Contentpost, post.Categorie, cookie.Value) //ajoute le post dans la base
+				if err != nil {
+					erreur500(w)
+					return
+				}
+				data.Posts, err = postDB() //recupere les post de la base pour les afficher
+				if err != nil {
+					erreur500(w)
+					return
+				}
 
 			} else if IDButtonLike != "" { //si il y a un like
 
-				fmt.Println("buttonLike : " + IDButtonLike)
+				log.Println("buttonLike : " + IDButtonLike)
 				intButtonLike, err := strconv.Atoi(IDButtonLike) //converti le string en int
 				if err != nil {
-					fmt.Println("error : ", err)
+					log.Println("error : ", err)
+					erreur500(w)
+					return
 				}
-				dbLike(intButtonLike, cookie.Value) //ajoute le like dans la base
-				data.Posts = postDB()               //recupere les post de la base pour les afficher
+				err = dbLike(intButtonLike, cookie.Value) //ajoute le like dans la base
+				if err != nil {
+					erreur500(w)
+					return
+				}
+				data.Posts, err = postDB() //recupere les post de la base pour les afficher
+				if err != nil {
+					erreur500(w)
+					return
+				}
 			} else {
 				// createTablePost()
-				data.Posts = postDB() //recupere les post de la base pour les afficher
-				fmt.Println(data.Posts)
+				data.Posts, err = postDB() //recupere les post de la base pour les afficher
+				if err != nil {
+					erreur500(w)
+					return
+				}
 			}
 		}
 	} else {
 		data.Connected = false //non connecté
 		buttonSelect := r.FormValue("buttonCategorie")
 		if buttonSelect != "" && buttonSelect != "all" { //si il y a un bouton de categorie
-			fmt.Println("buttonSelect : " + buttonSelect)
-			tri = triPost(buttonSelect) //tri les post par categorie
-			data.Posts = tri            //affiche les post trié
+			log.Println("buttonSelect : " + buttonSelect)
+			tri, err = triPost(buttonSelect) //tri les post par categorie
+			if err != nil {
+				erreur500(w)
+				return
+			}
+			data.Posts = tri //affiche les post trié
 
 		} else {
-			data.Posts = postDB() //recupere les post de la base pour les afficher
+			data.Posts, err = postDB() //recupere les post de la base pour les afficher
+			if err != nil {
+				erreur500(w)
+				return
+			}
 		}
 	}
 

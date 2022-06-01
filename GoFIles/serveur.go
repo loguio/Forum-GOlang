@@ -30,15 +30,17 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		Logout(w, r) //lance la fonction Logout
 	default:
 		w.WriteHeader(http.StatusNotFound) // lance l'erreur 404 quand on est sur une URL pas utilisée
-
-		fmt.Fprintf(w, "Not implemented")
+		erreur404(w)
 	}
 }
 
 func Logout(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.ParseFiles("../template/Log.html") //charge le template
-	cookie, err := r.Cookie("session-id")                    //récupere le cookie session-id de la page
-	if err == nil {                                          // si il n'y en a pas
+	if err != nil {
+		erreur500(w)
+	}
+	cookie, err := r.Cookie("session-id") //récupere le cookie session-id de la page
+	if err == nil {                       // si il n'y en a pas
 		fmt.Println("cookie value before logout : " + cookie.Value)
 		cookie.MaxAge = -1        //supprime le cookie
 		http.SetCookie(w, cookie) //envoie le cookie
@@ -55,6 +57,23 @@ func profile(w http.ResponseWriter, r *http.Request) {
 	user := User{}
 	tmpl, err := template.ParseFiles("./profile.html") //charge le template
 	if err != nil {
+		erreur500(w)
 	}
 	tmpl.ExecuteTemplate(w, "profile", user) //execute le template
+}
+
+func erreur500(w http.ResponseWriter) {
+	tmpl, err := template.ParseFiles("../template/500.html") //charge le template
+	if err != nil {
+		fmt.Fprintf(w, "Erreur 500")
+	}
+	tmpl.ExecuteTemplate(w, "500", nil) //execute le template
+}
+
+func erreur404(w http.ResponseWriter) {
+	tmpl, err := template.ParseFiles("../template/404.html") //charge le template
+	if err != nil {
+		fmt.Fprintf(w, "Erreur 404")
+	}
+	tmpl.ExecuteTemplate(w, "404", nil) //execute le template
 }
