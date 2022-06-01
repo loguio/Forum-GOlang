@@ -119,6 +119,35 @@ svg {
     /* background-color: green; */
 }
 
+#divButtonLogout {
+    width: 3em;
+    height: 2em;
+    margin-left: 85%;
+    margin-top: 5em;
+    z-index: 30;
+    /* background-color: fuchsia; */
+    
+}
+
+#LogoutButton {
+    width: 4em;
+    height: 3em;
+    background: none;
+    border: none;
+    background-color: #52575E ;
+    color: rgb(225, 224, 224) ;
+    border-radius: 8px;
+    box-shadow: 2px 2px 10px rgba(164, 68, 159, 0.485);
+    transition: 0.5s;
+}
+
+#LogoutButton:hover {
+    box-shadow: 2px 2px 10px rgba(164, 68, 159, 0.682);
+    transition: 0.5s;
+}
+
+
+
 #clicable {
     position: relative;
     width: 10em;
@@ -241,4 +270,151 @@ input:focus {
 #postContent {
     margin-left: 5px;
     margin-bottom: 10px;
+}
+
+#sport{
+    background: none;
+    border: none;
+    background-color: #848586;
+    width:5em;
+    height: 5em;
+    border-radius: 50%;
+    cursor: pointer;
+   color: rgb(225, 224, 224);
+   box-shadow: 0px 0px 20px rgba(164, 68, 159, 0.485);
+   transition: 0.5s;
+   margin-bottom: 1.8em;
+}
+
+#sport:hover{
+    box-shadow: 0px 0px 20px rgba(164, 68, 159, 0.768);
+    transition: 0.5s;
+}
+
+#gaming{
+    background: none;
+    border: none;
+    background-color: #848586;
+    width:5em;
+    height: 5em;
+    border-radius: 50%;
+    cursor: pointer;
+   color: rgb(225, 224, 224);
+   box-shadow: 0px 0px 20px rgba(164, 68, 159, 0.485);
+   transition: 0.5s;
+   margin-bottom: 1.8em;
+}
+#gaming:hover{
+    box-shadow: 0px 0px 20px rgba(164, 68, 159, 0.768);
+    transition: 0.5s;
+}
+
+#actualité {
+    background: none;
+    border: none;
+    background-color: #848586;
+    width:5em;
+    height: 5em;
+    border-radius: 50%;
+    cursor: pointer;
+   color: rgb(225, 224, 224);
+   box-shadow: 0px 0px 20px rgba(164, 68, 159, 0.485);
+   transition: 0.5s;
+   margin-bottom: 1.8em;
+}
+#actualité:hover{
+    box-shadow: 0px 0px 20px rgba(164, 68, 159, 0.768);
+    transition: 0.5s;
+}
+
+#humour{
+    background: none;
+    border: none;
+    background-color: #848586;
+    width:5em;
+    height: 5em;
+    border-radius: 50%;
+    cursor: pointer;
+   color: rgb(225, 224, 224);
+   box-shadow: 0px 0px 20px rgba(164, 68, 159, 0.485);
+   transition: 0.5s;
+   margin-bottom: 1.8em;
+}
+#humour:hover{
+    box-shadow: 0px 0px 20px rgba(164, 68, 159, 0.768);
+    transition: 0.5s;
+}
+
+#serieEtfilme{
+    background: none;
+    border: none;
+    background-color: #848586;
+    width:5em;
+    height: 5em;
+    border-radius: 50%;
+    cursor: pointer;
+   color: rgb(225, 224, 224);
+   box-shadow: 0px 0px 20px rgba(164, 68, 159, 0.485);
+   transition: 0.5s;
+   margin-bottom: 1.8em;
+}
+#serieEtfilme:hover{
+    box-shadow: 0px 0px 20px rgba(164, 68, 159, 0.768);
+    transition: 0.5s;
+}
+
+#musique {
+    background: none;
+    border: none;
+    background-color: #848586;
+    width:5em;
+    height: 5em;
+    border-radius: 50%;
+    cursor: pointer;
+   color: rgb(225, 224, 224);
+   box-shadow: 0px 0px 20px rgba(164, 68, 159, 0.485);
+   transition: 0.5s;
+   margin-bottom: 1.8em;
+}
+#musique:hover{
+    box-shadow: 0px 0px 20px rgba(164, 68, 159, 0.768);
+    transition: 0.5s;
+}
+
+#all {
+    background: none;
+    border: none;
+    background-color: #848586;
+    width:5em;
+    height: 5em;
+    border-radius: 50%;
+    cursor: pointer;
+   color: rgb(225, 224, 224);
+   box-shadow: 0px 0px 20px rgba(164, 68, 159, 0.485);
+   transition: 0.5s;
+   margin-bottom: 1.8em;
+}
+
+#all:hover{
+    box-shadow: 0px 0px 20px rgba(164, 68, 159, 0.768);
+    transition: 0.5s;
+}
+
+#signin{
+    margin-left: 85%;
+    margin-top: 15%;
+    width: 4em;
+    height: 3em;
+    background: none;
+    border: none;
+    background-color: #52575E ;
+    color: rgb(225, 224, 224) ;
+    border-radius: 8px;
+    box-shadow: 2px 2px 10px rgba(164, 68, 159, 0.485);
+    transition: 0.5s;
+}
+
+#signin:hover {
+    box-shadow: 2px 2px 10px rgba(164, 68, 159, 0.682);
+    transition: 0.5s;
 }

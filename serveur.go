@@ -33,6 +33,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		home(w, r)
 	case "/logout":
 		Logout(w, r)
+	case "/profile":
+		profile(w,r)
 	default:
 		w.WriteHeader(http.StatusNotFound)
 		fmt.Fprintf(w, "Not implemented")
@@ -41,7 +43,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 func Signin(w http.ResponseWriter, r *http.Request) {
 	user := User{}
-	tmpl, err := template.ParseFiles("./sign in.html") // utilisation du fichier navPage.gohtml pour le template
+	tmpl, err := template.ParseFiles("./template/signIn.html") // utilisation du fichier navPage.gohtml pour le template
 	if r.Method == "POST" {
 		UserName := r.FormValue("Username")
 		Password := r.FormValue("password")
@@ -64,7 +66,7 @@ var secret = "secret"
 
 func Login(w http.ResponseWriter, r *http.Request) {
 	user := User{}
-	tmpl, err := template.ParseFiles("./log.html")
+	tmpl, err := template.ParseFiles("./template/log.html")
 	if err != nil {
 	}
 	if r.Method == "POST" {
@@ -130,7 +132,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 	sqliteDatabase, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
 	defer sqliteDatabase.Close()
 	tri := []Post{}
-	tmpl, err := template.ParseFiles("./home.html")
+	tmpl, err := template.ParseFiles("./template/home.html")
 	if err != nil {
 	}
 	cookie, err := r.Cookie("session-id")
@@ -147,6 +149,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 				tri = triPost(sqliteDatabase, buttonSelect)
 				
 			} else {
+				tri = postDB()
 				post = Post{Name: Name, Contentpost: Contentpost, Categorie: Categorie}
 				addpost(sqliteDatabase, post.Name, post.Contentpost, post.Categorie)
 			}
@@ -154,6 +157,14 @@ func home(w http.ResponseWriter, r *http.Request) {
 		}
 	} else {
 		data.Connected = false
+		buttonSelect := r.FormValue("buttonCategorie")
+		if buttonSelect != "" {
+			fmt.Println("buttonSelect : " + buttonSelect)
+			tri = triPost(sqliteDatabase, buttonSelect)
+			
+		} else {
+			tri = postDB()
+		}
 	}
 	if tri != nil {
 		data.Posts = tri
@@ -167,7 +178,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 
 func profile(w http.ResponseWriter, r *http.Request) {
 	user := User{}
-	tmpl, err := template.ParseFiles("./profile.html")
+	tmpl, err := template.ParseFiles("./template/profile.html")
 	if err != nil {
 	}
 	tmpl.ExecuteTemplate(w, "profile", user)
