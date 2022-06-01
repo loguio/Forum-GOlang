@@ -8,7 +8,7 @@ download this folder, then go to the folder "Gofiles" and run the command
 ```bash 
 go run .
 ```
-, now you can go on http://localhost:3000/home
+Now you can go on http://localhost:3000/home
 
 ## functionality
 
