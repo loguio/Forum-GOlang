@@ -15,8 +15,12 @@
     <div id="categorieBar">
         <h1>Categories</h1>
         <form action="/Signin" method="POST">
-        <button type="submit" id="signin">Sign in</button>
-    </form>
+            <button type="submit" id="signin">Sign in</button>
+        </form>
+        <form action="/home" method="POST">
+            <button type="submit" id="signup">home</button>
+        </form>
+
         <br>
         <br>
         <div id="categorieListe">
@@ -53,6 +57,9 @@
             <div id="postContent">
             <h2>{{.Contentpost}}</h2>
             </div>
+            <form method="POST" action="/home">
+                <button type="submit" id="like" name="buttonLike" value="{{.ID}}">ㅤLike : {{.Like}}ㅤ</button>
+            </form>
             <script></script>
         </div>
     {{end}}
