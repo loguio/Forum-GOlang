@@ -25,7 +25,6 @@ body {
     box-shadow: 17px 16px 21px rgba(164, 68, 159, 0.121);
     transition: 0.5s;
     text-align: center;
-    margin-top: auto;
     margin: auto;
 }
 
@@ -187,3 +186,30 @@ a {
 p {
     color: #babbbb;
 }
+
+#goHome {
+    position: absolute;
+    top: 0;
+    margin-top: 1em;
+}
+
+#homebutton {
+    background: none;
+    border: #A444A0;
+    border-style: solid;
+    border-radius: 6px;
+    box-shadow: 0px 0px 10px rgba(164, 68, 159, 0.604);
+    width: 5em;
+    height: 3em;
+    transition: all .2s ease-in-out;
+    margin-left: 1.5em;
+    margin-top: 0.5em;
+    color: rgb(225, 224, 224);
+    text-align: center;
+  }
+  
+  
+  #homebutton:hover {
+    box-shadow: 0px 0px 10px rgba(164, 68, 159, 0.818);
+    transform: scale(1.1);
+  }
