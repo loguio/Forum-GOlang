@@ -1,15 +1,61 @@
 {{ define "profile"}}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./static/css/profile.css">
     <title>Profile</title>
 </head>
+
 <body>
-    <h1>ici c'est le body</h1>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/0/02/Stickman.gif" alt="">
+    <h1> Profile</h1>
+    <div class="info">
+        <h2> Vous etes connecter en tant que {{ .User.Username}}</h2>
+        <h3>Email : {{ .User.Email}}</h3>
+    </div>
+    <div id="post">
+
+        {{range .Poste}}
+        <div id="testpost">
+            <div id="postTitle">
+                <h1>{{.Name}}</h1>
+            </div>
+            <div class="barre"></div>
+            <br>
+            <div id="postContent">
+                <h2>{{.Contentpost}}</h2>
+            </div>
+            <form method="POST" action="/profile">
+                <button type="submit" id="like" name="buttonLike" value="{{.ID}}">ㅤLike : {{.Like}}ㅤ</button>
+            </form>
+            <button type="submit" id="delete" onclick="PopupDelete()"></button>
+
+        </div>
+        
+    </div>
+    <div id="popup">
+        <script>
+            function PopupDelete() {
+                document.getElementById('popup').style.display = "block"
+            }
+            function HiddenPopup() {
+                document.getElementById('popup').style.display = "none"
+            }
+
+        </script>
+        <span id="close" onclick="HiddenPopup()">X</span>
+        <span> Etes vous sur de vouloir supprimer votre poste ?</span>
+        <form action="/profile" method="POST" id="formvalidation">
+            <button type="submit" id="validationOui" name="ButtonOui" value="{{ .ID}}">oui</button>
+            <button type="submit" id="validationNon" onclick="HiddenPopup()">non</button>
+        </form>
+
+    </div>
+    {{end}}
 </body>
+
 </html>
 {{end}}
