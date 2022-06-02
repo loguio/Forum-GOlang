@@ -108,13 +108,19 @@ func searchUser(UserName string) (User, error) {
 	return ppl, nil
 }
 
-func searchUserByUUID(UUID string) User {
-	db, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
+func searchUserByUUID(UUID string) (User, error) {
+	db, err := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
+	if err != nil {
+		log.Println(err)
+		return User{}, err
+	}
+
 	defer db.Close()
 
 	row, err := db.Query("SELECT * FROM Customer WHERE UUID = ?", UUID)
 	if err != nil {
 		log.Println(err.Error() + " YA UNE ERREUR LA DANS SEARCH USER BY UUID")
+		return User{}, err
 	}
 	var ppl = User{}
 	defer row.Close()
@@ -122,7 +128,7 @@ func searchUserByUUID(UUID string) User {
 		row.Scan(&ppl.Username, &ppl.Email, &ppl.Password, &ppl.UUID)
 	}
 
-	return ppl
+	return ppl, nil
 }
 
 func postDB() ([]Post, error) {
@@ -218,12 +224,18 @@ func getComment(id int) ([]Comment, error) {
 	return data, nil
 }
 
-func PostByUser(UUID string) []Post {
-	db, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
+func PostByUser(UUID string) ([]Post, error) {
+	db, err := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
 	defer db.Close()
 
 	row, err := db.Query("SELECT * FROM TablePost WHERE UUID_User = ?", UUID)
 	if err != nil {
+		log.Println(err)
+		return nil, err
 	}
 	strLike := ""
 	var post Post
@@ -236,11 +248,15 @@ func PostByUser(UUID string) []Post {
 		data = append(data, post)
 	}
 	log.Println(data)
-	return data
+	return data, nil
 }
 
-func Delete(id int) {
-	db, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
+func Delete(id int) error {
+	db, err := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
+	if err != nil {
+		log.Println(err)
+		return err
+	}
 	defer db.Close()
 
 	log.Println("delete post ...")
@@ -248,10 +264,13 @@ func Delete(id int) {
 	statement, err := db.Prepare(deletePostSQL)
 	if err != nil {
 		log.Println(err.Error())
+		return err
 	}
 	_, err = statement.Exec(id)
 	if err != nil {
 		log.Println(err.Error())
+		return err
 	}
 	log.Println("Post deleted")
+	return nil
 }

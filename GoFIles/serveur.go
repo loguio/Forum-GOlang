@@ -44,7 +44,7 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 	}
 	cookie, err := r.Cookie("session-id") //récupere le cookie session-id de la page
 	if err == nil {                       // si il n'y en a pas
-		fmt.Println("cookie value before logout : " + cookie.Value)
+		log.Println("cookie value before logout : " + cookie.Value)
 		cookie.MaxAge = -1        //supprime le cookie
 		http.SetCookie(w, cookie) //envoie le cookie
 		log.Println("You've successfully logged out.")
@@ -77,6 +77,7 @@ func profile(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.ParseFiles("../template/profile.html") //charge le template
 	if err != nil {
 		erreur500(w)
+		return
 	}
 	cookie, err := r.Cookie("session-id")
 	data := DataProfile{}
@@ -86,9 +87,16 @@ func profile(w http.ResponseWriter, r *http.Request) {
 		if ButtonValidationOui != "" {
 			intid, err := strconv.Atoi(ButtonValidationOui)
 			if err != nil {
-				fmt.Println("error : ", err)
+				log.Println("error : ", err)
+				erreur500(w)
+				return
 			}
-			Delete(intid)
+			err = Delete(intid)
+			if err != nil {
+				log.Println("error : ", err)
+				erreur500(w)
+				return
+			}
 		} else if IDButtonLike != "" {
 			log.Println("buttonLike : " + IDButtonLike)
 			intButtonLike, err := strconv.Atoi(IDButtonLike) //converti le string en int
@@ -105,9 +113,18 @@ func profile(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	if err == nil {
-		Poste := PostByUser(cookie.Value)
+		Poste, err := PostByUser(cookie.Value)
+		if err != nil {
+			erreur500(w)
+			return
+		}
+
 		data.Poste = Poste
-		user = searchUserByUUID(cookie.Value)
+		user, err = searchUserByUUID(cookie.Value)
+		if err != nil {
+			erreur500(w)
+			return
+		}
 		data.User = user
 	} else {
 		log.Println("vous n'etes pas connecter")
