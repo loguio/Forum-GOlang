@@ -1,6 +1,7 @@
 {{define "Signin"}}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,21 +9,29 @@
     <link rel="stylesheet" href="./static/css/sign in.css">
     <title>Sign in</title>
 </head>
+
 <body>
+
+
     <div id="sign-in">
-        <form action="/home" method="POST">
-            <button id="logoutbutton"> home</button>
-        </form>
+        
+        <div id="goHome">
+            <form action="/home" method="POST">
+                <button id="homebutton"> home</button>
+            </form>
+        </div>
+
         <h1>Y-Forum</h1>
         <form action="/Signin" method="POST">
             <input id="Username" name="Username" type="text" placeholder="Username"> <br>
-            <input id="Mail" name="Mail" type="text" placeholder="Mail" > <br>
+            <input id="Mail" name="Mail" type="text" placeholder="Mail"> <br>
             <input id="password" name="password" type="password" placeholder="Password "> <br>
             <input id="confPassword" name="confPassword" type="password" placeholder="Repeat password"> <br>
-            <button id="sign-inButton" type="submit" > Sign-in</button>
+            <button id="sign-inButton" type="submit"> Sign-in</button>
         </form>
         <p>Vous avez deja un compte ? <a href="./Login"> connecter vous !</a></p>
     </div>
 </body>
+
 </html>
 {{end}}
