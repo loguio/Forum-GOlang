@@ -14,7 +14,17 @@ body {
 }
 
 .info{
-    background-color: #52575E;   
+    background-color: #52575E;
+    border-radius: 11px;
+    text-align: center;
+    margin-top: 2em;
+    margin-left: 2em;
+    width: 17em;
+}
+
+#titre {
+    margin-top: 2em;
+    margin-left: 2em;
 }
 
 #testpost {
@@ -40,10 +50,11 @@ body {
     flex-wrap: wrap;
     width: 45em;
     margin: 0 auto;
-    margin-top: 1em;
+    margin-top: -8em;
     /* text-align: center; */
     overflow-y: scroll;
     overflow-x: hidden;
+
 }
 
 #post:hover {
@@ -82,8 +93,20 @@ body {
 #popup {
     width: 20em;
     height: 20em;
-    background-color: fuchsia;
+    position: relative;
+    background-color: #52575E;
     display: none;
+    z-index: 99;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -30em;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    text-align: center;
+    border-style: solid;
+    border-color: #A444A0;
+    box-shadow: 0px 0px 12px #a4449fa5;
 }
 
 #validation {
@@ -96,7 +119,15 @@ body {
     height: 2em;
     font-size: 1.5em;
     cursor: pointer;
+    border-radius: 50%;
+    background-color: #812c7c;
+    text-align: center;
+    padding-top: 9px;
 
+}
+
+#sure {
+    margin-top: -2em;
 }
 
 #delete{
@@ -104,15 +135,118 @@ body {
     width: 5em;
 }
 
-#validationNon {
-    width: 5em;
-    height: 3em;
-}
+#validationNon{
+    margin-top: 1em;
+    position: relative;
+    right: 20px;
+    bottom: 20px;
+    border:none;
+    width: 130px;
+    height: 40px;
+    line-height: 40px;
+    -webkit-perspective: 230px;
+    perspective: 230px;
+    background: none;
+    margin-left: 20%;
+    color: rgb(225, 224, 224);
+  }
+  #validationNon span {
+    display: block;
+    position: absolute;
+    width: 130px;
+    height: 40px;
+    border: 2px solid #848586;
+    box-shadow: 0px 0px 12px #a4449fa5;
+    margin:0;
+    text-align: center;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+  }
+  #validationNon span:nth-child(1) {
+    -webkit-transform: rotateX(90deg);
+    -moz-transform: rotateX(90deg);
+    transform: rotateX(90deg);
+    -webkit-transform-origin: 50% 50% -20px;
+    -moz-transform-origin: 50% 50% -20px;
+    transform-origin: 50% 50% -20px;
+  }
+  #validationNon span:nth-child(2) {
+    -webkit-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+    -webkit-transform-origin: 50% 50% -20px;
+    -moz-transform-origin: 50% 50% -20px;
+    transform-origin: 50% 50% -20px;
+  }
+  #validationNon:hover span:nth-child(1) {
+    -webkit-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+  }
+  #validationNon:hover span:nth-child(2) {
+    -webkit-transform: rotateX(-90deg);
+    -moz-transform: rotateX(-90deg);
+    transform: rotateX(-90deg);
+  }
 
-#validationOui {
-    width: 5em;
-    height: 3em;
-}
+#validationOui{
+    position: relative;
+    right: 20px;
+    bottom: 20px;
+    border:none;
+    width: 130px;
+    height: 40px;
+    line-height: 40px;
+    -webkit-perspective: 230px;
+    perspective: 230px;
+    background: none;
+    margin-left: 20%;
+    color: rgb(225, 224, 224);
+  }
+  #validationOui span {
+    display: block;
+    position: absolute;
+    width: 130px;
+    height: 40px;
+    border: 2px solid #848586;
+    box-shadow: 0px 0px 12px #a4449fa5;
+    margin:0;
+    text-align: center;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+  }
+  #validationOui span:nth-child(1) {
+    -webkit-transform: rotateX(90deg);
+    -moz-transform: rotateX(90deg);
+    transform: rotateX(90deg);
+    -webkit-transform-origin: 50% 50% -20px;
+    -moz-transform-origin: 50% 50% -20px;
+    transform-origin: 50% 50% -20px;
+  }
+  #validationOui span:nth-child(2) {
+    -webkit-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+    -webkit-transform-origin: 50% 50% -20px;
+    -moz-transform-origin: 50% 50% -20px;
+    transform-origin: 50% 50% -20px;
+  }
+  #validationOui:hover span:nth-child(1) {
+    -webkit-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+  }
+  #validationOui:hover span:nth-child(2) {
+    -webkit-transform: rotateX(-90deg);
+    -moz-transform: rotateX(-90deg);
+    transform: rotateX(-90deg);
+  }
 
 #formvalidation{
     width: 11em;
