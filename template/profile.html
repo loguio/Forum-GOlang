@@ -40,28 +40,34 @@
 
         </div>
         
+        {{end}}
     </div>
+    {{range .Poste}}
     <div id="popup">
-        <script>
-            function PopupDelete() {
-                document.getElementById('popup').style.display = "flex"
-            }
-            function HiddenPopup() {
-                document.getElementById('popup').style.display = "none"
-            }
+            <script>
+                function PopupDelete() {
+                    document.getElementById('popup').style.display = "flex"
+                }
+                function HiddenPopup() {
+                    document.getElementById('popup').style.display = "none"
+                }
 
-        </script>
-        <span id="close" onclick="HiddenPopup()">X</span> 
-        <br>
-        <span id="sure"> Etes vous sur de vouloir supprimer votre poste ?</span>
-         <br>
-        <form action="/profile" method="POST" id="formvalidation">
-            <button type="submit" id="validationOui" name="ButtonOui" value="{{ .ID}}"><span>Sure ?</span><span>Oui</span></button>
-            <button type="submit" id="validationNon" onclick="HiddenPopup()"><span>Sure ?</span><span>Non</span></button>
-        </form>
+            </script>
+            <span id="close" onclick="HiddenPopup()">X</span>
+            <br>
+            <span id="sure"> Etes vous sur de vouloir supprimer votre poste ?</span>
+            <br>
+            <form action="/profile" method="POST" id="formvalidation">
+                <button type="submit" id="validationOui" name="ButtonOui" value="{{ .ID}}"><span>Sure
+                        ?</span><span>Oui</span></button>
+                <button type="submit" id="validationNon" onclick="HiddenPopup()"><span>Sure
+                        ?</span><span>Non</span></button>
+            </form>
 
-    </div>
-    {{end}}
+        </div>
+        {{ end}}
+
+
 </body>
 
 </html>

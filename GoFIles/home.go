@@ -8,6 +8,7 @@ import (
 )
 
 func home(w http.ResponseWriter, r *http.Request) {
+	log.Println("home")
 	var post Post
 	var data data
 	var tri []Post
@@ -15,9 +16,11 @@ func home(w http.ResponseWriter, r *http.Request) {
 
 	tmpl, err := template.ParseFiles("../template/home.html") //parse le template home.html
 	if err != nil {
+		log.Println(err)
 		erreur500(w)
 		return
 	}
+	log.Println("home3")
 
 	cookie, err := r.Cookie("session-id") //recupere le cookie session-id
 	if err == nil {                       //si il y a un cookie
