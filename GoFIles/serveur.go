@@ -82,23 +82,36 @@ func profile(w http.ResponseWriter, r *http.Request) {
 	data := DataProfile{}
 	if r.Method == "POST" {
 		ButtonValidationOui := r.FormValue("ButtonOui")
-
+		IDButtonLike := r.FormValue("buttonLike")
 		if ButtonValidationOui != "" {
 			intid, err := strconv.Atoi(ButtonValidationOui)
 			if err != nil {
 				fmt.Println("error : ", err)
 			}
 			Delete(intid)
+		} else if IDButtonLike != "" {
+			log.Println("buttonLike : " + IDButtonLike)
+			intButtonLike, err := strconv.Atoi(IDButtonLike) //converti le string en int
+			if err != nil {
+				log.Println("error : ", err)
+				erreur500(w)
+				return
+			}
+			err = dbLike(intButtonLike, cookie.Value) //ajoute le like dans la base
+			if err != nil {
+				erreur500(w)
+				return
+			}
 		}
 	}
 	if err == nil {
 		Poste := PostByUser(cookie.Value)
 		data.Poste = Poste
+		user = searchUserByUUID(cookie.Value)
+		data.User = user
 	} else {
 		log.Println("vous n'etes pas connecter")
 	}
-	user = searchUserByUUID(cookie.Value)
-	data.User = user
 
 	tmpl.ExecuteTemplate(w, "profile", data)
 }

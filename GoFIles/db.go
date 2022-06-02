@@ -168,11 +168,13 @@ func triPost(Categorie string) ([]Post, error) {
 		log.Println(err)
 		return nil, err
 	}
+	strLike := ""
 	var post Post
 	var data []Post
 	defer row.Close()
 	for row.Next() {
-		row.Scan(&post.ID, &post.Name, &post.Contentpost, &post.Categorie, &post.Like, &post.UUID) // assigne chaque collone de la case a la structure de type Post
+		row.Scan(&post.ID, &post.Name, &post.Contentpost, &post.Categorie, &strLike, &post.UUID) // assigne chaque collone de la case a la structure de type Post
+		post.Like = len(strings.Split(strLike, " ")) - 1                                         // -1 pour ne pas compter le vide
 		data = append(data, post)
 	}
 	log.Println(data)
@@ -204,11 +206,13 @@ func getComment(id int) ([]Comment, error) {
 		log.Println(err)
 		return nil, err
 	}
+	strLike := ""
 	var comment Comment
 	var data []Comment
 	defer row.Close()
 	for row.Next() {
-		row.Scan(&comment.ID, &comment.Comment, &comment.Like, &comment.UUID, &comment.IDPost) // assigne chaque collone de la case a la structure de type Post
+		row.Scan(&comment.ID, &comment.Comment, &strLike, &comment.UUID, &comment.IDPost) // assigne chaque collone de la case a la structure de type Post
+		comment.Like = len(strings.Split(strLike, " ")) - 1                               // -1 pour ne pas compter le vide
 		data = append(data, comment)
 	}
 	return data, nil
@@ -221,11 +225,14 @@ func PostByUser(UUID string) []Post {
 	row, err := db.Query("SELECT * FROM TablePost WHERE UUID_User = ?", UUID)
 	if err != nil {
 	}
+	strLike := ""
 	var post Post
 	var data []Post
 	defer row.Close()
 	for row.Next() {
-		row.Scan(&post.ID, &post.Name, &post.Contentpost, &post.Categorie, &post.Like, &post.UUID)
+		row.Scan(&post.ID, &post.Name, &post.Contentpost, &post.Categorie, &strLike, &post.UUID)
+		post.Like = len(strings.Split(strLike, " ")) - 1 // -1 pour ne pas compter le vide
+
 		data = append(data, post)
 	}
 	log.Println(data)

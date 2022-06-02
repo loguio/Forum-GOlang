@@ -6,19 +6,14 @@ import (
 	"strings"
 )
 
-func remove(s []string, i int) []string { //fonction pour enlever un élément d'un tableau
-	s[len(s)-1], s[i] = s[i], s[len(s)-1]
-	return s[:len(s)-1]
-}
-
-func dbLike(id int, UUID string) error {
+func dbLikeComment(idComment int, UUID string) error {
 	db, err := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
 	if err != nil {
 		log.Println(err)
 		return err
 	}
-	defer db.Close()                //ferme la database
-	like, err := searchLikePost(id) //appel la fonction searchLikePost
+	defer db.Close()                          //ferme la database
+	like, err := searchLikeComment(idComment) //appel la fonction searchLikePost
 	if err != nil {
 		return err
 	}
@@ -32,28 +27,28 @@ func dbLike(id int, UUID string) error {
 		}
 	}
 	if there { //si l'utilisateur a déjà liké le post
-		IDLike = remove(IDLike, i)                              //enlève le post de la liste
-		like = strings.Join(IDLike, " ")                        //reconstruit le string
-		addLike := `UPDATE TablePost SET Like = ? WHERE id = ?` //création de la requête sqlite
-		statement, err := db.Prepare(addLike)                   //prepare la requête
+		IDLike = remove(IDLike, i)                                 //enlève le post de la liste
+		like = strings.Join(IDLike, " ")                           //reconstruit le string
+		addLike := `UPDATE TableComment SET Like = ? WHERE ID = ?` //création de la requête sqlite
+		statement, err := db.Prepare(addLike)                      //prepare la requête
 		if err != nil {
 			log.Println(err.Error())
 			return err
 		}
-		_, err = statement.Exec(like, id) //execute la requête
+		_, err = statement.Exec(like, idComment) //execute la requête
 		if err != nil {
 			log.Println(err.Error())
 			return err
 		}
 		log.Println("like removed")
 	} else {
-		addLike := `UPDATE TablePost SET Like = ? WHERE id = ?` //création de la requête sqlite
-		statement, err := db.Prepare(addLike)                   //prepare la requête
+		addLike := `UPDATE TableComment SET Like = ? WHERE ID = ?` //création de la requête sqlite
+		statement, err := db.Prepare(addLike)                      //prepare la requête
 		if err != nil {
 			log.Println(err.Error())
 			return err
 		}
-		_, err = statement.Exec(like+" "+UUID, id) //execute la requête pour ajouter un like
+		_, err = statement.Exec(like+" "+UUID, idComment) //execute la requête pour ajouter un like
 		if err != nil {
 			log.Println(err.Error())
 			return err
@@ -63,7 +58,7 @@ func dbLike(id int, UUID string) error {
 	return nil
 }
 
-func searchLikePost(id int) (string, error) {
+func searchLikeComment(id int) (string, error) {
 	db, err := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
 	if err != nil {
 		log.Println(err)
@@ -71,9 +66,9 @@ func searchLikePost(id int) (string, error) {
 	}
 	defer db.Close() // Fermer la database quand on a fini
 
-	row, err := db.Query("SELECT * FROM TablePost WHERE ID = ?", id) // Cherche dans la base le post avec l'ID
+	row, err := db.Query("SELECT * FROM TableComment WHERE ID = ?", id) // Cherche dans la base le post avec l'ID
 	if err != nil {
-		log.Println(err.Error() + " YA UNE ERREUR LA DANS SEARCH TALBE LIKE")
+		log.Println(err.Error() + " YA UNE ERREUR LA DANS SEARCH TALBE LIKE COMMENT")
 		return "", err
 	}
 	var ppl = Post{}
@@ -83,4 +78,5 @@ func searchLikePost(id int) (string, error) {
 		row.Scan(&ppl.ID, &ppl.Name, &ppl.Contentpost, &ppl.Categorie, &strLike, &ppl.UUID) // assigne chaque collone de la case a la structure de type Post
 	}
 	return strLike, nil
+
 }

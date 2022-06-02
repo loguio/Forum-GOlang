@@ -26,7 +26,7 @@ type Comment struct { //struct pour les commentaires
 	ID      int
 	Comment string
 	UUID    string
-	Like    string
+	Like    int
 	IDPost  int
 }
 
