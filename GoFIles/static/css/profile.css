@@ -6,12 +6,12 @@
 
 body {
     width: 100%;
-    height: 45em;
+    height: 100%;
     bottom: 0;
     background-color: #2C2F33;
     color: rgb(225, 224, 224);
     font-family: Arial, Helvetica, sans-serif;
-    position: fixed;
+    
 }
 
 .info{
@@ -21,12 +21,14 @@ body {
     margin-top: 2em;
     margin-left: 2em;
     width: 17em;
+    padding: 0.5em;
 }
 
 #titre {
-    margin-top: 2em;
-    margin-left: 2em;
+    margin-top: 1em;
+    margin-left: 1.5em;
     width: 17em;
+
 }
 
 #testpost {
@@ -55,7 +57,8 @@ body {
     flex-wrap: wrap;
     width: 45em;
     margin: 0 auto;
-    margin-top: -15.6em;
+    margin-top: -18em;
+    margin-bottom: 5em;
     /* text-align: center; */
     overflow-y: scroll;
     overflow-x: hidden;
@@ -135,10 +138,7 @@ body {
     margin-top: -2em;
 }
 
-#delete{
-    height: 3em;
-    width: 5em;
-}
+
 
 #validationNon{
     margin-top: 1em;
@@ -260,6 +260,92 @@ body {
 #formvalidation{
     width: 11em;
     height: 7em;
-
 }
 
+
+#homebutton {
+    background: none;
+    border: none;
+    width: 2em;
+    height: 2em;
+    /* margin-top: -2em;
+    margin-left: -4em; */
+    /* background-color: fuchsia; */
+    
+}
+
+#homebuttontexte {
+  z-index: 999;
+  margin-top: -5em;
+  margin-left: -0.2em;
+  font-size: 4em;
+  color: rgb(225, 224, 224);
+  margin-top: 0.6em;
+  margin-left: 2em;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.fa{
+  font-size: 3em !important;
+}
+
+#trash{
+  z-index: 999;
+  font-size: 2em;
+  color: rgb(225, 224, 224);
+  cursor: pointer;
+}
+
+#delete{
+    height: 3em;
+    width: 5em;
+    background: none;
+    border: #A444A0;
+    border-style: solid;
+    border-radius: 6px;
+    box-shadow: 0px 0px 10px rgba(164, 68, 159, 0.604);
+    margin-left: 0.5em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    transition: all .2s ease-in-out;
+}
+
+#delete:hover {
+  box-shadow: 0px 0px 10px rgba(164, 68, 159, 0.818);
+  transform: scale(1.1);
+}
+
+#like {
+  background: none;
+  border: #A444A0;
+  border-style: solid;
+  border-radius: 6px;
+  box-shadow: 0px 0px 10px rgba(164, 68, 159, 0.604);
+  width: 5em;
+  height: 3em;
+  transition: all .2s ease-in-out;
+  margin-left: 0.5em;
+  margin-top: 0.5em;
+  color: rgb(225, 224, 224);
+  text-align: center;
+}
+
+
+#like:hover {
+  box-shadow: 0px 0px 10px rgba(164, 68, 159, 0.818);
+  transform: scale(1.1);
+}
+
+#infoContent {
+  margin-top: 2em;
+  width: 17em;
+}
+
+#postTitle{
+  margin: 0.4em;
+}
+
+#postContent {
+  margin: 0.4em;
+}

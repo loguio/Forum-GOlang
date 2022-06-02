@@ -24,7 +24,13 @@ func home(w http.ResponseWriter, r *http.Request) {
 
 	cookie, err := r.Cookie("session-id") //recupere le cookie session-id
 	if err == nil {                       //si il y a un cookie
-		data.Connected = true //connecté
+		data.Connected = true      //connecté
+		data.Posts, err = postDB() //recupere les post de la base pour les afficher
+		log.Println("data.Posts : ", data.Posts)
+		if err != nil {
+			erreur500(w)
+			return
+		}
 		if r.Method == "POST" {
 
 			Name := r.FormValue("Name")
@@ -34,6 +40,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 			IDButtonLike := r.FormValue("buttonLike")
 			comment := r.FormValue("comment")
 			idComment := r.FormValue("IDbuttonComment")
+			IDButtonLikeCommnt := r.FormValue("buttonLikeComment")
 
 			if buttonSelect != "" && buttonSelect != "all" { //si il y a un bouton de categorie
 
@@ -97,6 +104,24 @@ func home(w http.ResponseWriter, r *http.Request) {
 					erreur500(w)
 					return
 				}
+			} else if IDButtonLikeCommnt != "" { //si il y a un like sur un commentaire
+				log.Println("buttonLikeComment : " + IDButtonLikeCommnt)
+				intButtonLikeCommnt, err := strconv.Atoi(IDButtonLikeCommnt) //converti le string en int
+				if err != nil {
+					log.Println("error : ", err)
+					erreur500(w)
+					return
+				}
+				err = dbLikeComment(intButtonLikeCommnt, cookie.Value) //ajoute le like dans la base
+				if err != nil {
+					erreur500(w)
+					return
+				}
+				data.Posts, err = postDB() //recupere les post de la base pour les afficher
+				if err != nil {
+					erreur500(w)
+					return
+				}
 			} else {
 				// createTablePost()
 				data.Posts, err = postDB() //recupere les post de la base pour les afficher
@@ -107,12 +132,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		}
-		data.Posts, err = postDB() //recupere les post de la base pour les afficher
-		log.Println("data.Posts : ", data.Posts)
-		if err != nil {
-			erreur500(w)
-			return
-		}
+
 	} else {
 		data.Connected = false //non connecté
 		buttonSelect := r.FormValue("buttonCategorie")
