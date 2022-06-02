@@ -56,8 +56,18 @@
             <form method="POST" action="/home">
                 <button type="submit" id="like" name="buttonLike" value="{{.ID}}">ㅤLike : {{.Like}}ㅤ</button>
             </form>
-            <script></script>
+            <form method="POST" action="/home">
+                <input type="text" id="comment" name="comment" placeholder="Commentaire">
+                <button type="submit" id="Com" name="IDbuttonComment" value="{{.ID}}">submit</button>
+            </form>
         </div>
+        {{/* {{range .Comment}} */}}
+            {{/* <p>{{.UUID}}</p>	 */}}
+            {{/* <p>{{.Content}}</p>
+            <form method="POST" action="/home">
+                <button type="submit" id="like" name="buttonLike" value="{{.ID}}">ㅤLike : {{.Like}}ㅤ</button>
+            </form> */}}
+        {{/* {{end}} */}}
     {{end}}
     </div>
 
