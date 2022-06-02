@@ -11,6 +11,7 @@ body {
     background-color: #2C2F33;
     color: rgb(225, 224, 224);
     font-family: Arial, Helvetica, sans-serif;
+    position: fixed;
 }
 
 .info{
@@ -25,6 +26,7 @@ body {
 #titre {
     margin-top: 2em;
     margin-left: 2em;
+    width: 17em;
 }
 
 #testpost {
@@ -35,6 +37,9 @@ body {
     box-shadow: inset 0px 0px 10px rgba(164, 68, 159, 0.5), 0px 0px 20px rgba(164, 68, 159, 0.555);
     border-radius: 15px;
     width: 90%;
+    overflow: auto;
+    overflow-wrap: anywhere;
+
 }
 
 #post {
@@ -50,7 +55,7 @@ body {
     flex-wrap: wrap;
     width: 45em;
     margin: 0 auto;
-    margin-top: -8em;
+    margin-top: -15.6em;
     /* text-align: center; */
     overflow-y: scroll;
     overflow-x: hidden;
@@ -177,6 +182,7 @@ body {
     -webkit-transform: rotateX(0deg);
     -moz-transform: rotateX(0deg);
     transform: rotateX(0deg);
+    
     -webkit-transform-origin: 50% 50% -20px;
     -moz-transform-origin: 50% 50% -20px;
     transform-origin: 50% 50% -20px;
@@ -185,11 +191,13 @@ body {
     -webkit-transform: rotateX(0deg);
     -moz-transform: rotateX(0deg);
     transform: rotateX(0deg);
+    
   }
   #validationNon:hover span:nth-child(2) {
     -webkit-transform: rotateX(-90deg);
     -moz-transform: rotateX(-90deg);
     transform: rotateX(-90deg);
+    visibility: hidden;
   }
 
 #validationOui{
@@ -246,6 +254,7 @@ body {
     -webkit-transform: rotateX(-90deg);
     -moz-transform: rotateX(-90deg);
     transform: rotateX(-90deg);
+    visibility: hidden;
   }
 
 #formvalidation{
@@ -253,3 +262,4 @@ body {
     height: 7em;
 
 }
+
