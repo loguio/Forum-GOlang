@@ -108,6 +108,23 @@ func searchUser(UserName string) (User, error) {
 	return ppl, nil
 }
 
+func searchUserByUUID(UUID string) User {
+	db, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
+	defer db.Close()
+
+	row, err := db.Query("SELECT * FROM Customer WHERE UUID = ?", UUID)
+	if err != nil {
+		log.Println(err.Error() + " YA UNE ERREUR LA DANS SEARCH USER BY UUID")
+	}
+	var ppl = User{}
+	defer row.Close()
+	for row.Next() {
+		row.Scan(&ppl.Username, &ppl.Email, &ppl.Password, &ppl.UUID)
+	}
+
+	return ppl
+}
+
 func postDB() ([]Post, error) {
 	db, err := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
 	if err != nil {
@@ -195,4 +212,39 @@ func getComment(id int) ([]Comment, error) {
 		data = append(data, comment)
 	}
 	return data, nil
+}
+
+func PostByUser(UUID string) []Post {
+	db, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
+	defer db.Close()
+
+	row, err := db.Query("SELECT * FROM TablePost WHERE UUID_User = ?", UUID)
+	if err != nil {
+	}
+	var post Post
+	var data []Post
+	defer row.Close()
+	for row.Next() {
+		row.Scan(&post.ID, &post.Name, &post.Contentpost, &post.Categorie, &post.Like, &post.UUID)
+		data = append(data, post)
+	}
+	log.Println(data)
+	return data
+}
+
+func Delete(id int) {
+	db, _ := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
+	defer db.Close()
+
+	log.Println("delete post ...")
+	deletePostSQL := `DELETE FROM TablePost WHERE ID=?`
+	statement, err := db.Prepare(deletePostSQL)
+	if err != nil {
+		log.Println(err.Error())
+	}
+	_, err = statement.Exec(id)
+	if err != nil {
+		log.Println(err.Error())
+	}
+	log.Println("Post deleted")
 }

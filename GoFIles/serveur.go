@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"strconv"
 
 	_ "github.com/mattn/go-sqlite3" // Import go-sqlite3 library
 	_ "github.com/satori/go.uuid"
@@ -25,7 +26,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	case "/Signin":
 		Signin(w, r) //lance la fonction Signin
 	case "/home":
-		home(w, r) //lance la fonction home
+		home(w, r)
+	case "/profile":
+		profile(w, r)
 	case "/logout":
 		Logout(w, r) //lance la fonction Logout
 	default:
@@ -35,7 +38,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func Logout(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles("../template/Log.html") //charge le template
+	tmpl, err := template.ParseFiles("../template/log.html") //charge le template
 	if err != nil {
 		erreur500(w)
 	}
@@ -53,15 +56,6 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func profile(w http.ResponseWriter, r *http.Request) {
-	user := User{}
-	tmpl, err := template.ParseFiles("./profile.html") //charge le template
-	if err != nil {
-		erreur500(w)
-	}
-	tmpl.ExecuteTemplate(w, "profile", user) //execute le template
-}
-
 func erreur500(w http.ResponseWriter) {
 	tmpl, err := template.ParseFiles("../template/500.html") //charge le template
 	if err != nil {
@@ -76,4 +70,35 @@ func erreur404(w http.ResponseWriter) {
 		fmt.Fprintf(w, "Erreur 404")
 	}
 	tmpl.ExecuteTemplate(w, "404", nil) //execute le template
+}
+
+func profile(w http.ResponseWriter, r *http.Request) {
+	user := User{}
+	tmpl, err := template.ParseFiles("../template/profile.html") //charge le template
+	if err != nil {
+		erreur500(w)
+	}
+	cookie, err := r.Cookie("session-id")
+	data := DataProfile{}
+	if r.Method == "POST" {
+		ButtonValidationOui := r.FormValue("ButtonOui")
+
+		if ButtonValidationOui != "" {
+			intid, err := strconv.Atoi(ButtonValidationOui)
+			if err != nil {
+				fmt.Println("error : ", err)
+			}
+			Delete(intid)
+		}
+	}
+	if err == nil {
+		Poste := PostByUser(cookie.Value)
+		data.Poste = Poste
+	} else {
+		log.Println("vous n'etes pas connecter")
+	}
+	user = searchUserByUUID(cookie.Value)
+	data.User = user
+
+	tmpl.ExecuteTemplate(w, "profile", data)
 }

@@ -29,3 +29,8 @@ type Comment struct { //struct pour les commentaires
 	Like    string
 	IDPost  int
 }
+
+type DataProfile struct {
+	User  User
+	Poste []Post
+}

@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./static/css/home.css">
-    <script src="../static/main.js"></script>
+
     <title>home</title>
 </head>
 
@@ -21,7 +21,7 @@
                 <button type="submit" id="all" name="buttonCategorie" value="all">Home</button>
             </form>
             <form action="/home" method="POST">
-            <button type="submit" id="sport" name="buttonCategorie" value="sport">Sport</button>
+                <button type="submit" id="sport" name="buttonCategorie" value="sport">Sport</button>
             </form>
             <form action="/home" method="POST">
                 <button type="submit" id="gaming" name="buttonCategorie" value="gaming">Gaming</button>
@@ -33,25 +33,26 @@
                 <button type="submit" id="humour" name="buttonCategorie" value="humour">Humour</button>
             </form>
             <form action="/home" method="POST">
-                <button type="submit" id="serieEtfilme" name="buttonCategorie" value="serie/filme">Serie et Filme</button>
+                <button type="submit" id="serieEtfilme" name="buttonCategorie" value="serie/filme">Serie et
+                    Filme</button>
             </form>
             <form action="/home" method="POST">
                 <button type="submit" id="musique" name="buttonCategorie" value="musique">Musique</button>
             </form>
         </div>
     </div>
-    
+
 
     <div id="post">
-    {{range .Posts}}
+        {{range .Posts}}
         <div id="testpost">
             <div id="postTitle">
-            <h1>{{.Name}}</h1>
+                <h1>{{.Name}}</h1>
             </div>
             <div class="barre"></div>
             <br>
             <div id="postContent">
-            <h2>{{.Contentpost}}</h2>
+                <h2>{{.Contentpost}}</h2>
             </div>
             <form method="POST" action="/home">
                 <button type="submit" id="like" name="buttonLike" value="{{.ID}}">ㅤLike : {{.Like}}ㅤ</button>
@@ -88,7 +89,7 @@
                         </defs>
                         <path fill="url(#gradient)">
                             <animate attributeName="d" dur="8000ms" repeatCount="indefinite"
-                            values="M454.5,290Q443,330,434.5,378Q426,426,378,434.5Q330,443,290,459Q250,475,209,461Q168,447,124.5,433Q81,419,62.5,377Q44,335,43.5,292.5Q43,250,36.5,204.5Q30,159,52.5,117Q75,75,121.5,63Q168,51,209,35.5Q250,20,294,29Q338,38,367.5,70.5Q397,103,426,134Q455,165,460.5,207.5Q466,250,454.5,290Z;
+                                values="M454.5,290Q443,330,434.5,378Q426,426,378,434.5Q330,443,290,459Q250,475,209,461Q168,447,124.5,433Q81,419,62.5,377Q44,335,43.5,292.5Q43,250,36.5,204.5Q30,159,52.5,117Q75,75,121.5,63Q168,51,209,35.5Q250,20,294,29Q338,38,367.5,70.5Q397,103,426,134Q455,165,460.5,207.5Q466,250,454.5,290Z;
                             M469,294.5Q466,339,435.5,372Q405,405,371.5,433Q338,461,294,461.5Q250,462,211,450Q172,438,135.5,419.5Q99,401,79,365Q59,329,34,289.5Q9,250,25,207Q41,164,74.5,136Q108,108,134.5,71Q161,34,205.5,25Q250,16,289,38.5Q328,61,373,71.5Q418,82,439.5,122.5Q461,163,466.5,206.5Q472,250,469,294.5Z ;
                             M465.5,297Q476,344,451,385Q426,426,380.5,441Q335,456,292.5,466Q250,476,211.5,455.5Q173,435,129.5,424.5Q86,414,67,374Q48,334,46,292Q44,250,52.5,211Q61,172,72.5,128Q84,84,123.5,61.5Q163,39,206.5,24.5Q250,10,295,21Q340,32,383,53Q426,74,445.5,117.5Q465,161,460,205.5Q455,250,465.5,297Z ;
                             M485.5,296.5Q474,343,434,368.5Q394,394,364.5,425Q335,456,292.5,463.5Q250,471,210.5,456Q171,441,138,418Q105,395,84.5,361Q64,327,35,288.5Q6,250,30.5,209.5Q55,169,77,134Q99,99,132,72.5Q165,46,207.5,27.5Q250,9,294,24Q338,39,367.5,71Q397,103,433.5,131Q470,159,483.5,204.5Q497,250,485.5,296.5Z ;
@@ -102,13 +103,14 @@
 
             </svg>
         </div>
-        
+
     </div>
 
 
+
     
-    {{if .Connected}}
     <div id="popup">
+        {{if .Connected}}
         <script>
             function popup() {
                 console.log("popup");
@@ -122,20 +124,24 @@
                 document.getElementById('croisClose').style.display = "none"
 
             }
-            function hidden(){
-                document.getElementById('signin').style.display="none"
+            function hidden() {
+                document.getElementById('signin').style.display = "none"
             }
         </script>
 
-        <div id="crois" onclick="popup()"><p>+</p></div>
-        <div id ="croisClose" onclick="closePopup()"><p>X</p></div>
-        <div id="publication"> 
+        <div id="crois" onclick="popup()">
+            <p>+</p>
+        </div>
+        <div id="croisClose" onclick="closePopup()">
+            <p>X</p>
+        </div>
+        <div id="publication">
             <form action="/home" method="POST">
                 <input name="Name" id="name" type="text" placeholder="Nom du poste"> <br>
-                <input name="Contentpost" id="contentpost" type="text" placeholder="contenue"> <br> 
+                <input name="Contentpost" id="contentpost" type="text" placeholder="contenue"> <br>
                 <select name="Categorie" id="categorie">
-                    <option value="">Categorie</option> 
-                    <option value="sport">Sport</option> 
+                    <option value="">Categorie</option>
+                    <option value="sport">Sport</option>
                     <option value="gaming">Gaming</option>
                     <option value="actualité">Actualité</option>
                     <option value="humour">Humour</option>
@@ -151,23 +157,21 @@
             </form>
         </div>
         {{ else }}
-            <script>
-                function unhidden(){
-                    document.getElementById('signin').style.display = "block"
-                }
-                function hiddenLogout(){
-                    document.getElementById('LogoutButton').style.display = "none"
-                    document.getElementById('divButtonLogout').style.display = "none"
-                }
-            </script>
+        <script>
+            function unhidden() {
+                document.getElementById('signin').style.display = "block"
+            }
+            function hiddenLogout() {
+                document.getElementById('LogoutButton').style.display = "none"
+                document.getElementById('divButtonLogout').style.display = "none"
+            }
+        </script>
         <form action="/Signin" method="POST">
             <button type="submit" id="signin">Sign in</button>
         </form>
         {{end}}
 
     </div>
-
-
 </body>
 
 </html>
