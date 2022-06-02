@@ -63,3 +63,27 @@ func dbInsertPost(Name string, Contentpost string, Categorie string, cookieValue
 	log.Println("Post added")
 	return nil
 }
+
+func dbInsertComment(Contentpost string, cookieValue string, UUIDPost int) error {
+	db, err := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	defer db.Close() //ferme la database
+
+	log.Println("Inserting new Comment ...")
+	insertPostSQL := `INSERT or IGNORE INTO TableComment(Contentpost, UUID_User, UUID_Post) VALUES (?, ?, ?)` //création de la requête sqlite
+	statement, err := db.Prepare(insertPostSQL)                                                               // Prepare la requete
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+	_, err = statement.Exec(Contentpost, cookieValue, UUIDPost) // Execute la requete sqlite
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+	log.Println("Comment added")
+	return nil
+}

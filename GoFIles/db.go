@@ -108,29 +108,6 @@ func searchUser(UserName string) (User, error) {
 	return ppl, nil
 }
 
-func searchLikePost(id int) (string, error) {
-	db, err := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
-	if err != nil {
-		log.Println(err)
-		return "", err
-	}
-	defer db.Close() // Fermer la database quand on a fini
-
-	row, err := db.Query("SELECT * FROM TablePost WHERE ID = ?", id) // Cherche dans la base le post avec l'ID
-	if err != nil {
-		log.Println(err.Error() + " YA UNE ERREUR LA DANS SEARCH TALBE LIKE")
-		return "", err
-	}
-	var ppl = Post{}
-	defer row.Close()
-	var strLike string
-	for row.Next() {
-		row.Scan(&ppl.ID, &ppl.Name, &ppl.Contentpost, &ppl.Categorie, &strLike, &ppl.UUID) // assigne chaque collone de la case a la structure de type Post
-	}
-	// IDLike := strings.Split(ppl.Like, " ")
-	return strLike, nil
-}
-
 func postDB() ([]Post, error) {
 	db, err := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
 	if err != nil {
@@ -150,7 +127,13 @@ func postDB() ([]Post, error) {
 	for TablePost.Next() {
 		TablePost.Scan(&post.ID, &post.Name, &post.Contentpost, &post.Categorie, &strLike, &post.UUID) // assigne chaque collone de la case a la structure de type Post
 		post.Like = len(strings.Split(strLike, " ")) - 1                                               // -1 pour ne pas compter le vide
-		data = append(data, post)                                                                      // ajoute le post a la liste
+		comment, err := getComment(post.ID)
+		if err != nil {
+			log.Println(err)
+			return nil, err
+		}
+		post.Comment = comment
+		data = append(data, post) // ajoute le post a la liste
 	}
 	return data, nil
 }
@@ -176,5 +159,40 @@ func triPost(Categorie string) ([]Post, error) {
 		data = append(data, post)
 	}
 	log.Println(data)
+	return data, nil
+}
+
+func dbComment(comment string, UUID string, idComment int) error {
+	err := createTableComment()
+	if err != nil {
+		return err
+	}
+	err = dbInsertComment(comment, UUID, idComment)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func getComment(id int) ([]Comment, error) {
+	db, err := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	defer db.Close()
+
+	row, err := db.Query("SELECT * FROM TableComment WHERE UUID_Post = ?", id) // Cherche dans la base tout les posts
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	var comment Comment
+	var data []Comment
+	defer row.Close()
+	for row.Next() {
+		row.Scan(&comment.ID, &comment.Comment, &comment.Like, &comment.UUID, &comment.IDPost) // assigne chaque collone de la case a la structure de type Post
+		data = append(data, comment)
+	}
 	return data, nil
 }

@@ -62,3 +62,26 @@ func dbLike(id int, UUID string) error {
 	}
 	return nil
 }
+
+func searchLikePost(id int) (string, error) {
+	db, err := sql.Open("sqlite3", "./sqlite-database.db") // Open the created SQLite File
+	if err != nil {
+		log.Println(err)
+		return "", err
+	}
+	defer db.Close() // Fermer la database quand on a fini
+
+	row, err := db.Query("SELECT * FROM TablePost WHERE ID = ?", id) // Cherche dans la base le post avec l'ID
+	if err != nil {
+		log.Println(err.Error() + " YA UNE ERREUR LA DANS SEARCH TALBE LIKE")
+		return "", err
+	}
+	var ppl = Post{}
+	defer row.Close()
+	var strLike string
+	for row.Next() {
+		row.Scan(&ppl.ID, &ppl.Name, &ppl.Contentpost, &ppl.Categorie, &strLike, &ppl.UUID) // assigne chaque collone de la case a la structure de type Post
+	}
+	// IDLike := strings.Split(ppl.Like, " ")
+	return strLike, nil
+}

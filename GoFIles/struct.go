@@ -19,4 +19,13 @@ type Post struct { //struct pour les posts
 	Like        int
 	UUID        string
 	ID          int
+	Comment     []Comment
+}
+
+type Comment struct { //struct pour les commentaires
+	ID      int
+	Comment string
+	UUID    string
+	Like    string
+	IDPost  int
 }

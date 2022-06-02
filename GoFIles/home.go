@@ -29,6 +29,8 @@ func home(w http.ResponseWriter, r *http.Request) {
 			Categorie := r.FormValue("Categorie")
 			buttonSelect := r.FormValue("buttonCategorie")
 			IDButtonLike := r.FormValue("buttonLike")
+			comment := r.FormValue("comment")
+			idComment := r.FormValue("IDbuttonComment")
 
 			if buttonSelect != "" && buttonSelect != "all" { //si il y a un bouton de categorie
 
@@ -41,7 +43,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 				data.Posts = tri //affiche les post trié
 
 			} else if Name != "" && Contentpost != "" && Categorie != "" { //si il y a un post
-
+				log.Println("Tu as mis un post")
 				post = Post{Name: Name, Contentpost: Contentpost, Categorie: Categorie}
 				// createTablePost()
 				err = dbInsertPost(post.Name, post.Contentpost, post.Categorie, cookie.Value) //ajoute le post dans la base
@@ -74,14 +76,39 @@ func home(w http.ResponseWriter, r *http.Request) {
 					erreur500(w)
 					return
 				}
-			} else {
-				// createTablePost()
+			} else if comment != "" && idComment != "" { //si il y a un commentaire
+				log.Println("Tu as mis un commentaire")
+				intIDComment, err := strconv.Atoi(idComment) //converti le string en int
+				if err != nil {
+					log.Println("error : ", err)
+					erreur500(w)
+					return
+				}
+				err = dbComment(comment, cookie.Value, intIDComment) //ajoute le commentaire dans la base
+				if err != nil {
+					erreur500(w)
+					return
+				}
 				data.Posts, err = postDB() //recupere les post de la base pour les afficher
 				if err != nil {
 					erreur500(w)
 					return
 				}
+			} else {
+				// createTablePost()
+				data.Posts, err = postDB() //recupere les post de la base pour les afficher
+				log.Println("data.Posts : ", data.Posts)
+				if err != nil {
+					erreur500(w)
+					return
+				}
 			}
+		}
+		data.Posts, err = postDB() //recupere les post de la base pour les afficher
+		log.Println("data.Posts : ", data.Posts)
+		if err != nil {
+			erreur500(w)
+			return
 		}
 	} else {
 		data.Connected = false //non connecté
