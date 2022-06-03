@@ -66,17 +66,17 @@
             <span id="hiddenMsg" onclick="hiddenAllComment()">❌</span>
             <script>
                 function seeAllComment(){
-                    document.getElementById('Commentaire').style.display= "block"
+                    document.getElementById('{{.ID}}').style.display= "block"
                     document.getElementById('hiddenMsg').style.display= "block"
                     document.getElementById('showMsg').style.display= "none"
                 }
                 function hiddenAllComment(){
-                    document.getElementById('Commentaire').style.display= "none"
+                    document.getElementById('{{.ID}}').style.display= "none"
                     document.getElementById('hiddenMsg').style.display= "none"
                     document.getElementById('showMsg').style.display= "block"
                 }
             </script>
-            <div id="Commentaire">
+            <div id="{{.ID}}">
             {{range .Comment}}
                 <p>{{ .Comment}}</p>
             {{end}}
