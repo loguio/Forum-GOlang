@@ -18,7 +18,7 @@ body {
 #Log {
     position: relative;
     width: 30em;
-    height: 30em;
+    height: 35em;
     margin: 0 auto;
     background-color: #52575E;
     border-radius: 41px;
@@ -140,3 +140,23 @@ p {
     color: #babbbb;
 }
 
+#homebutton {
+    background: none;
+    border: #A444A0;
+    border-style: solid;
+    border-radius: 6px;
+    box-shadow: 0px 0px 10px rgba(164, 68, 159, 0.604);
+    width: 5em;
+    height: 3em;
+    transition: all .2s ease-in-out;
+    margin-left: -28em;
+    margin-top: 1em;
+    color: rgb(225, 224, 224);
+    text-align: center;
+  }
+  
+  
+  #homebutton:hover {
+    box-shadow: 0px 0px 10px rgba(164, 68, 159, 0.818);
+    transform: scale(1.1);
+  }

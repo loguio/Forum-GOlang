@@ -7,19 +7,37 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./static/css/profile.css">
+    <script src="https://kit.fontawesome.com/c8f1977fcd.js" crossorigin="anonymous"></script>
     <title>Profile</title>
 </head>
 
 <body>
+<<<<<<< HEAD
     <span id="titre">
         <h1> Profile</h1>
+=======
+    <div id="infoContent">
+
+
+>>>>>>> 6725f61bebddd15ccd07f515eea92612e26b9189
         <form action="/home" method="POST">
-            <button id="logoutbutton"> home</button>
+            <button id="homebutton">
+                <p id="homebuttontexte"><i class="fa-solid fa-house"></p></i>
+            </button>
         </form>
+<<<<<<< HEAD
     </span>
     <div class="info">
         <h2> Vous etes connecter en tant que {{ .User.Username}}</h2>
         <h3>Email : {{ .User.Email}}</h3>
+=======
+        <h1 id="titre">Profile : </h1>
+
+        <div class="info">
+            <h2> Vous etes connecter en tant que : {{ .User.Username}}</h2>
+            <h3>Email : {{ .User.Email}}</h3>
+        </div>
+>>>>>>> 6725f61bebddd15ccd07f515eea92612e26b9189
     </div>
     <div id="post">
 
@@ -34,38 +52,40 @@
                 <h2>{{.Contentpost}}</h2>
             </div>
             <form method="POST" action="/profile">
-                <button type="submit" id="like" name="buttonLike" value="{{.ID}}">ㅤLike : {{.Like}}ㅤ</button>
+                <button type="submit" id="like" name="buttonLike" value="{{.ID}}">Like : {{.Like}}</button>
             </form>
-            <button type="submit" id="delete" onclick="PopupDelete()"></button>
+            <button type="submit" id="delete" onclick="PopupDelete()">
+                <p id="trash"><i class="fa-solid fa-trash-can"></i></p>
+            </button>
 
         </div>
-        
+
         {{end}}
     </div>
     {{range .Poste}}
     <div id="popup">
-            <script>
-                function PopupDelete() {
-                    document.getElementById('popup').style.display = "flex"
-                }
-                function HiddenPopup() {
-                    document.getElementById('popup').style.display = "none"
-                }
+        <script>
+            function PopupDelete() {
+                document.getElementById('popup').style.display = "flex"
+            }
+            function HiddenPopup() {
+                document.getElementById('popup').style.display = "none"
+            }
 
-            </script>
-            <span id="close" onclick="HiddenPopup()">X</span>
-            <br>
-            <span id="sure"> Etes vous sur de vouloir supprimer votre poste ?</span>
-            <br>
-            <form action="/profile" method="POST" id="formvalidation">
-                <button type="submit" id="validationOui" name="ButtonOui" value="{{ .ID}}"><span>Sure
-                        ?</span><span>Oui</span></button>
-                <button type="submit" id="validationNon" onclick="HiddenPopup()"><span>Sure
-                        ?</span><span>Non</span></button>
-            </form>
+        </script>
+        <span id="close" onclick="HiddenPopup()">X</span>
+        <br>
+        <span id="sure"> Etes vous sur de vouloir supprimer votre poste ?</span>
+        <br>
+        <form action="/profile" method="POST" id="formvalidation">
+            <button type="submit" id="validationOui" name="ButtonOui" value="{{ .ID}}"><span>Sure
+                    ?</span><span>Oui</span></button>
+            <button type="submit" id="validationNon" onclick="HiddenPopup()"><span>Sure
+                    ?</span><span>Non</span></button>
+        </form>
 
-        </div>
-        {{ end}}
+    </div>
+    {{ end}}
 
 
 </body>

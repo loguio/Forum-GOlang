@@ -502,3 +502,11 @@ input:focus {
     font-size: 3em !important;
 }
 
+#postTitle{
+    margin: 0.4em;
+  }
+  
+  #postContent {
+    margin: 0.4em;
+  }
+
